@@ -34,7 +34,6 @@ class AppRouter {
   }
 
   getExRoute(route) {
-      console.log(route);
     crossroads.parse(route);
     return this._currentRoute.getExRoute(this._currentParams);
   }

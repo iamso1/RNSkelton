@@ -15,31 +15,13 @@ class EntryScene extends React.Component {
     }
 
     componentDidMount() {
-      this.props.dispatch(replaceRoute('/auth/login', this.props.navigator.props.navKey));
+      this.props.dispatch(replaceRoute('/main', this.props.navigator.props.navKey));
     }
 
 
     componentWillReceiveProps(nextProps) {
      const {auth} = nextProps;
      this.props.dispatch(replaceRoute('/auth/login', this.props.navigator.props.navKey));
-     /*
-     if (this.props.auth !== auth && auth.action === 'checkAppSessionState') {
-       switch (auth.appSessionState) {
-         case AppSessionState.FirstLaunch:
-           // this.props.dispatch(replaceRoute('/pages/walkthrough', this.props.navigator.props.navKey));
-           break;
-         case AppSessionState.Logon:
-           WebsocketManager.connect();
-           this._getRouteWithDeepLink().then(route => {
-             this.props.dispatch(replaceRoute(route, this.props.navigator.props.navKey));
-           });
-           break;
-         default:
-           this.props.dispatch(replaceRoute('/auth/login', this.props.navigator.props.navKey));
-           break;
-       }
-     }
-     */
    }
 
 

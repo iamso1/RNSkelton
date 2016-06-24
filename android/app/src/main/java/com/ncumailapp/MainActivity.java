@@ -2,7 +2,6 @@ package com.ncumailapp;
 
 import com.facebook.react.ReactActivity;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.reactnativenavigation.RnnPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 
@@ -37,8 +36,7 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
-            new VectorIconsPackage(),
-            new RnnPackage()
+            new VectorIconsPackage()
         );
     }
 }

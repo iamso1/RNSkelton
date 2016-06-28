@@ -100,8 +100,6 @@ const styles = StyleSheet.create({
     flex:1,
     flexDirection: 'column',
     backgroundColor: '#eee',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
   },
   card: {
     borderWidth: 1,

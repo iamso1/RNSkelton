@@ -18,7 +18,7 @@ class EntryScene extends React.Component {
 
     componentDidMount() {
         //check login state
-        this.props.dispatch(replaceRoute('/auth/login', this.props.navigator.props.navKey));
+        this.props.dispatch(replaceRoute('/main', this.props.navigator.props.navKey));
     }
 
 

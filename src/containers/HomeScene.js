@@ -12,7 +12,6 @@ import {
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TabViewContainer from './TabViewContainer';
-import Tabs from 'react-native-tabs';
 import TabIcon from '../components/TabIcon';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 

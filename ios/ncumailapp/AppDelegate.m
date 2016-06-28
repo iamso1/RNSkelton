@@ -37,7 +37,6 @@
   NSString *jsCodeUrlString = [NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios&dev=true", serverIP];
   NSString *jsBundleUrlString = [jsCodeUrlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
   jsCodeLocation = [NSURL URLWithString:jsBundleUrlString];
-  
   /**
    * OPTION 2
    * Load from pre-bundled file on disk. The static bundle is automatically

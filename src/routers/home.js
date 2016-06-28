@@ -25,7 +25,7 @@ export class RouteEntry extends RouteBase {
 
 
 export class RouteHome extends RouteBase {
-  static PATTERN = '/main:?query:';
+  static PATTERN = '/main/:?query:';
 
   renderScene(navigator, query) {
     let tabIndex = 0;
@@ -37,8 +37,7 @@ export class RouteHome extends RouteBase {
     return (
       <HomeScene
         navigator={navigator}
-        tabIndex={tabIndex}
-      />
+        tabIndex={tabIndex}/>
     );
   }
 

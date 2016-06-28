@@ -33,6 +33,7 @@ class LoginScene extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const {auth} = nextProps;
+    /*
     if (this.props.auth !== auth && auth.action === 'login') {
       this.setState({buttonDisabled: auth.isFetching});
       if (auth.success) {
@@ -40,6 +41,7 @@ class LoginScene extends React.Component {
         return;
       }
     }
+    */
   }
 
   handleLogin() {
@@ -63,6 +65,7 @@ class LoginScene extends React.Component {
   }
 
   render() {
+
     return (
       <View style={styles.container}>
         <NavBar navigator={this.props.navigator} />
@@ -105,7 +108,6 @@ class LoginScene extends React.Component {
           text="我要註冊"
           style={styles.buttonSecondary}
         />
-
       </View>
     );
   }

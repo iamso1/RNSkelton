@@ -51,8 +51,7 @@ class Root extends React.Component {
           initialRoute={initialRoute}
           navKey="root"
           showNavigationBar={false}
-          ref={(exNavigator) => { this._exNavigator = exNavigator; }}
-        />
+          ref={(exNavigator) => { this._exNavigator = exNavigator; }}/>
         </View>
     );
   }

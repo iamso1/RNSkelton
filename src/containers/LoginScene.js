@@ -33,15 +33,16 @@ class LoginScene extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const {auth} = nextProps;
-    /*
+
     if (this.props.auth !== auth && auth.action === 'login') {
       this.setState({buttonDisabled: auth.isFetching});
       if (auth.success) {
-        this.props.dispatch(replaceRoute('/?hasLaunchImage=false', this.props.navigator.props.navKey));
+        //this.props.dispatch(replaceRoute('/?hasLaunchImage=false', this.props.navigator.props.navKey));
+        this.props.dispatch(replaceRoute('/main?hasLaunchImage=false', this.props.navigator.props.navKey));
         return;
       }
     }
-    */
+
   }
 
   handleLogin() {

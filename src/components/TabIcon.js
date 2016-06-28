@@ -45,7 +45,6 @@ const TabIcon = React.createClass({
   render() {
     return <View style={[styles.tabs, this.props.style, ]}>
       {this.props.tabs.map((tab, i) => {
-        console.log(tab);
         return <TouchableOpacity key={tab.icon} onPress={() => this.props.goToPage(i)} style={styles.tab}>
           <Icon
             name={tab.icon}

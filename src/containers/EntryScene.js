@@ -2,7 +2,9 @@
  * @flow
  */
 import React from 'react';
-import { Linking } from 'react-native';
+import {
+    Linking,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { replaceRoute } from '../actions/route';
 import { checkAppSessionState } from '../actions/auth';
@@ -15,7 +17,8 @@ class EntryScene extends React.Component {
     }
 
     componentDidMount() {
-      this.props.dispatch(replaceRoute('/main', this.props.navigator.props.navKey));
+        //check login state
+        this.props.dispatch(replaceRoute('/auth/login', this.props.navigator.props.navKey));
     }
 
 

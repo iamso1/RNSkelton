@@ -35,7 +35,6 @@ class FirstScene extends React.Component {
   }
 
   render() {
-      console.log(2222);
     return (
       <View style={styles.container}>
           <NavBar

@@ -10,12 +10,17 @@ import SessionManager from '../utils/sessionManager';
 export function login(account: string, password: string): Function {
   return (dispatch, getState) => {
     let params = {
-      mode: 'ssn_get2',
       acn: account,
       pwd: password,
     };
-
     dispatch({type: ActionTypes.LOGIN_REQUEST});
+    setTimeout(function(){
+        dispatch({
+        type: ActionTypes.LOGIN_RECEIVED,
+        success: true,
+        errorText: '',
+    })
+    }, 3000);
 
   };
 }

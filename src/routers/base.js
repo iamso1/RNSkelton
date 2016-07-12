@@ -22,7 +22,7 @@ export default class RouteBase {
         }
       },
       getTitle() {
-        return routeParams && routeParams.navTitle || 'Default Title';
+        return routeParams && routeParams.navTitle || '中正雲';
       },
       onWillBlur(event) {
         let component = this.scene;

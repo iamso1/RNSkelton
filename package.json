@@ -9,6 +9,7 @@
   "dependencies": {
     "@exponent/react-native-navigator": "^0.4.7",
     "crossroads": "^0.12.2",
+    "moment": "^2.14.1",
     "react": "^15.1.0",
     "react-addons-pure-render-mixin": "^15.1.0",
     "react-native": "^0.28.0",
@@ -17,7 +18,9 @@
     "react-native-vector-icons": "^2.0.3",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "urijs": "^1.18.1",
+    "x2js": "^2.0.1"
   },
   "devDependencies": {
     "babel": "^6.5.2",

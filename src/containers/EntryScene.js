@@ -11,7 +11,6 @@ import { checkAppSessionState } from '../actions/auth';
 import AppSessionState from '../constants/AppSessionState';
 import WebsocketManager from '../utils/websocketManager';
 
-
 class EntryScene extends React.Component {
     constructor(props){
         super(props);
@@ -25,7 +24,6 @@ class EntryScene extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const {auth} = nextProps;
-        console.log(WebsocketManager);
         if (this.props.auth !== auth && auth.action === 'checkAppSessionState') {
           switch (auth.appSessionState) {
             case AppSessionState.FirstLaunch:

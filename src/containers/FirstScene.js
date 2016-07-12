@@ -25,6 +25,7 @@ import InfiniteScrollView from 'react-native-infinite-scroll-view';
 import NavBar from '../components/NavBar';
 import FileEntityView from '../components/FileEntityView';
 import Immutable from 'immutable';
+import {changeRoute} from '../actions/route';
 import {connect} from 'react-redux';
 
 class FirstScene extends React.Component {
@@ -43,6 +44,7 @@ class FirstScene extends React.Component {
     constructor(props) {
         super(props);
         this.loadMore = this.loadMore.bind(this);
+        this.refresh = this.refresh.bind(this);
         this.renderFileEntityView = this.renderFileEntityView.bind(this);
         this.renderCreateDirDialog = this.renderCreateDirDialog.bind(this);
         this.handleSelectDirectory = this.handleSelectDirectory.bind(this);
@@ -104,7 +106,7 @@ class FirstScene extends React.Component {
     handleSelectAudio(name, csServer, url) {
       this.handleSelectMedia('audio', name, csServer, url);
     }
-    
+
     handleSelectVideo(name, csServer, url) {
       this.handleSelectMedia('video', name, csServer, url);
     }

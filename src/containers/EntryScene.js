@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { replaceRoute } from '../actions/route';
 import { checkAppSessionState } from '../actions/auth';
 import AppSessionState from '../constants/AppSessionState';
+import WebsocketManager from '../utils/websocketManager';
 
 
 class EntryScene extends React.Component {
@@ -18,13 +19,29 @@ class EntryScene extends React.Component {
 
     componentDidMount() {
         //check login state
-        this.props.dispatch(replaceRoute('/auth/login', this.props.navigator.props.navKey));
+        this.props.dispatch(checkAppSessionState());
     }
 
 
     componentWillReceiveProps(nextProps) {
-     const {auth} = nextProps;
-     this.props.dispatch(replaceRoute('/auth/login', this.props.navigator.props.navKey));
+        const {auth} = nextProps;
+        console.log(WebsocketManager);
+        if (this.props.auth !== auth && auth.action === 'checkAppSessionState') {
+          switch (auth.appSessionState) {
+            case AppSessionState.FirstLaunch:
+              // this.props.dispatch(replaceRoute('/pages/walkthrough', this.props.navigator.props.navKey));
+              break;
+            case AppSessionState.Logon:
+              WebsocketManager.connect();
+              this._getRouteWithDeepLink().then(route => {
+                this.props.dispatch(replaceRoute(route, this.props.navigator.props.navKey));
+              });
+              break;
+            default:
+              this.props.dispatch(replaceRoute('/auth/login', this.props.navigator.props.navKey));
+              break;
+          }
+        }
    }
 
 

@@ -7,8 +7,6 @@ import {request} from '../utils/apiWrapper';
 import X2JS from 'x2js';
 import SessionManager from '../utils/sessionManager';
 
-
-
 export function login(account: string, password: string): Function {
     return (dispatch, getState) => {
       let params = {
@@ -47,6 +45,44 @@ export function login(account: string, password: string): Function {
           dispatch({type: ActionTypes.LOGIN_RECEIVED, success: false, errorText: '內部錯誤'});
         });
     };
+}
+
+export function checkAppSessionState(): Function {
+  return (dispatch, getState) => {
+
+    let initialState = null;
+
+    let promise = SessionManager.init()
+      .then(() => SessionManager.sessionToken == null ? AppSessionState.NoSessionToken : initialState)
+      .then(state => {
+        if (state == null) {
+          let params = {
+            acn: SessionManager.acn,
+          };
+
+          return request('/API/chk_user_lock.php', 'GET', params, {})
+            .then(resp => resp.text())
+            .then(resp => {
+              return resp === 'Y' ? AppSessionState.InvalidSessionToken : AppSessionState.Logon;
+            })
+            .catch(error => {
+              throw error;
+            });
+        } else {
+          return state;
+        }
+      })
+      .then(state => {
+        dispatch({type: ActionTypes.CHECK_APP_SESSION_STATE, state: state});
+        return state;
+      })
+      .catch(error => {
+        console.error('checkAppSessionState() error - ' + error);
+        dispatch({type: ActionTypes.CHECK_APP_SESSION_STATE, state: AppSessionState.NoSessionToken});
+      });
+
+      return promise;
+  };
 }
 
 export function logout(): Function {

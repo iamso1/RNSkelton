@@ -10,7 +10,7 @@ import {
     InteractionManager,
     TouchableWithoutFeedback,
     RefreshControl,
-      StyleSheet,
+    StyleSheet,
 } from 'react-native';
 
 import {
@@ -20,90 +20,239 @@ import {
   composeFilesKey,
 } from '../actions/files';
 
+import InfiniteScrollView from 'react-native-infinite-scroll-view';
+
 import NavBar from '../components/NavBar';
+import FileEntityView from '../components/FileEntityView';
 import Immutable from 'immutable';
 import {connect} from 'react-redux';
 
 class FirstScene extends React.Component {
-  constructor(props) {
-    super(props);
-    let dataSource = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => !Immutable.is(r1, r2),
-      getRowData: (dataBlob, sectionID, rowID) => { return dataBlob[sectionID].get(rowID); }
-    });
-
-    this.state = {
-      path: this.props.path,
-      csServer: this.props.csServer,
-      dataSource: dataSource.cloneWithRows(Immutable.List(), []),
-      canLoadMore: true,
-      isRefreshing: false,
-      showCreateDirDialog: false,
-      createDirName: '',
+    static propTypes = {
+      navigator: PropTypes.object.isRequired,
+      name: PropTypes.string,
+      csServer: PropTypes.string,
+      path: PropTypes.string,
+      type: PropTypes.oneOf(['Image', 'Video', 'Audio', 'Html', 'Document,Text', 'Link']),
     };
-  }
 
-  static propTypes = {
-    navigator: PropTypes.object.isRequired,
-    name: PropTypes.string,
-  };
+    static defaultProps = {
+      path: null,
+    };
 
-  static defaultProps = {
-  };
+    constructor(props) {
+        super(props);
+        this.loadMore = this.loadMore.bind(this);
+        this.renderFileEntityView = this.renderFileEntityView.bind(this);
+        this.renderCreateDirDialog = this.renderCreateDirDialog.bind(this);
+        this._page = 1;
+        this._filesKey = composeFilesKey(this.props.type, this.props.path);
 
-  componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.props.dispatch(getFileList(this.props.csServer, this.state.path, this.props.type, this._page));
-    });
-  }
+        let dataSource = new ListView.DataSource({
+          rowHasChanged: (r1, r2) => !Immutable.is(r1, r2),
+          getRowData: (dataBlob, sectionID, rowID) => { return dataBlob[sectionID].get(rowID); }
+        });
 
-  componentWillReceiveProps(nextProps) {
-    const {files} = nextProps;
 
-    let pathFiles = files.get(this._filesKey);
-    console.log(pathFiles);
-    if (pathFiles != null && this.props.files.get(this._filesKey) !== pathFiles) {
-      let fileCount = pathFiles.get('files').size;
-      let canLoadMore = pathFiles.get('hasNextPaging');
-      let rowIds = (count => [...Array(count)].map((val, i) => i))(fileCount);
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(pathFiles.get('files'), rowIds),
-        canLoadMore: canLoadMore,
-        isRefreshing: false,
-      });
+        this.state = {
+          path: this.props.path,
+          csServer: this.props.csServer,
+          dataSource: dataSource.cloneWithRows(Immutable.List(), []),
+          canLoadMore: true,
+          isRefreshing: false,
+          showCreateDirDialog: false,
+          createDirName: '',
+        };
     }
-  }
 
-  render() {
-    return (
-      <View style={styles.container}>
-          <NavBar
-              navigator={this.props.navigator}
-              title={this.props.name}
-              renderRightButtonsComponent={this.renderNavRightButtons}/>
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+          this.props.dispatch(getFileList(this.props.csServer, this.state.path, this.props.type, this._page));
+        });
+    }
 
-          <Text style={{fontSize: 50, margin: 50}}>First Scene</Text>
-          <Text style={{fontSize: 50, margin: 50}}>First Scene</Text>
-          <Text style={{fontSize: 50, margin: 50}}>First Scene</Text>
-          <Text style={{fontSize: 50, margin: 50}}>First Scene</Text>
-          <Text style={{fontSize: 50, margin: 50}}>First Scene</Text>
-      </View>
-    );
-  }
+    componentWillReceiveProps(nextProps) {
+        const {files} = nextProps;
+
+        let pathFiles = files.get(this._filesKey);
+        console.log(pathFiles);
+        if (pathFiles != null && this.props.files.get(this._filesKey) !== pathFiles) {
+          let fileCount = pathFiles.get('files').size;
+          let canLoadMore = pathFiles.get('hasNextPaging');
+          let rowIds = (count => [...Array(count)].map((val, i) => i))(fileCount);
+          this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(pathFiles.get('files'), rowIds),
+            canLoadMore: canLoadMore,
+            isRefreshing: false,
+          });
+        }
+    }
+
+    loadMore() {
+      this.props.dispatch(getFileList(this.props.csServer, this.state.path, this.props.type, ++this._page));
+    }
+
+    refresh() {
+      this.setState({ isRefreshing: true });
+      this._page = 0;
+      this.props.dispatch(cleanupFileListData(this.state.path));
+      this.props.dispatch(getFileList(this.props.csServer, this.state.path, this.props.type, ++this._page));
+    }
+
+    renderCreateDirDialog() {
+      if (!this.state.showCreateDirDialog) { return null; }
+
+      return (
+        <TouchableWithoutFeedback onPress={this.closeCreateDirDialog}>
+          <View style={styles.overlay}>
+            <View style={styles.createDirDialog}>
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  style={styles.textInput}
+                  autoFocus={true}
+                  onChangeText={text => this.setState({ createDirName: text })}
+                  value={this.state.createDirName}
+                  placeholder="輸入資料夾名稱"
+                  autoCapitalize="none"/>
+              </View>
+              <View style={styles.createDirDialogControls}>
+                <View style={[styles.buttonTextContainer, styles.buttonTextContainerSeperator]}>
+                  <Text style={styles.buttonText} onPress={this.closeCreateDirDialog}>取消</Text>
+                </View>
+                <View style={styles.buttonTextContainer}>
+                  <Text style={styles.buttonText} onPress={this.createDir}>確認</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      );
+    }
+
+    renderFileEntityView(file) {
+      return (
+        <FileEntityView
+          file={file}
+          onSelectDirectory={this.handleSelectDirectory}
+          onSelectImage={this.handleSelectImage}
+          onSelectVideo={this.handleSelectVideo}
+          onSelectAudio={this.handleSelectAudio}
+          onSelectLink={this.handleSelectLink}
+          onSelectDocument={this.handleSelectDocument}
+          onSelectHtml={this.handleSelectHtml}
+        />
+      );
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+              <NavBar
+                navigator={this.props.navigator}
+                title={this.props.name}
+                renderRightButtonsComponent={this.renderNavRightButtons}
+              />
+              <ListView
+                renderScrollComponent={props =>
+                  <InfiniteScrollView
+                    refreshControl={
+                      <RefreshControl
+                        onRefresh={this.refresh}
+                        refreshing={this.state.isRefreshing}
+                      />
+                    }
+                    {...props}
+                  />
+                }
+                enableEmptySections={true}
+                onLoadMoreAsync={this.loadMore}
+                dataSource={this.state.dataSource}
+                canLoadMore={this.state.canLoadMore}
+                pageSize={30}
+                style={styles.listView}
+                renderRow={this.renderFileEntityView}
+                renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => <View key={rowID} style={styles.separator} />}
+                renderFooter={() => <View style={styles.footerMargin} />}
+              />
+
+              {this.renderCreateDirDialog()}
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  listView: {
+    marginTop: 10,
+  },
+  footerMargin: {
+    marginBottom: 10,
+  },
+  separator: {
+    backgroundColor: '#ccc',
+    height: 1,
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 50,
+    marginRight: 10,
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  createDirDialog: {
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    width: 300,
+    height: 100,
+  },
+  createDirDialogControls: {
+    flexDirection: 'row',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  textInputContainer: {
+    padding: 20,
+  },
+  textInput: {
+    height: 20,
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: '#0076ff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  buttonTextContainer: {
+    flex: 1,
+    borderTopWidth: 1,
+    borderColor: '#ccc',
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  buttonTextContainerSeperator: {
+    borderRightWidth: 1,
+  },
 });
 
 
 function mapStateToProps(state) {
-  const {auth} = state;
+  const { files } = state;
 
   return {
-      auth,
+      files,
   };
 }
 

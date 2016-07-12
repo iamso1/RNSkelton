@@ -24,6 +24,12 @@ export default createReducer(initialState, {
       });
       return newState;
     } else {
+        console.log({
+            files: Immutable.fromJS(action.data),
+            hasNextPaging: action.hasNextPaging,
+            csServer: action.csServer,
+            path: path
+        });
       let pathData = Immutable.Map({
         files: Immutable.fromJS(action.data),
         hasNextPaging: action.hasNextPaging,

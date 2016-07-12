@@ -9,9 +9,15 @@ export class FirstRoute extends RouteBase {
   static PATTERN = '/first/:?query:';
 
   renderScene(navigator, query) {
+    let { name, csServer, path, type } = query || {};
+    console.log(query);
     return (
       <FirstScene
-        navigator={navigator}/>
+        navigator={navigator}
+        name={name}
+        csServer={csServer}
+        path={path}
+        type={type}/>
     );
   }
 }

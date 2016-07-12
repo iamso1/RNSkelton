@@ -124,6 +124,7 @@ export function getFileList(csServer: ?string, listPath: ?string, type: ?Resourc
       .then(([data, hasNextPaging]) => filterDirectory(data, hasNextPaging))
       .then(([data, hasNextPaging]) => composeData(queryCsServer, data, hasNextPaging))
       .then(([data, hasNextPaging]) => {
+        console.log(type, listPath);
         dispatch({
           type: ActionTypes.FILE_LIST_RECEIVED,
           path: composeFilesKey(type, listPath),

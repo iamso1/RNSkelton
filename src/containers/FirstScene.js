@@ -45,6 +45,14 @@ class FirstScene extends React.Component {
         this.loadMore = this.loadMore.bind(this);
         this.renderFileEntityView = this.renderFileEntityView.bind(this);
         this.renderCreateDirDialog = this.renderCreateDirDialog.bind(this);
+        this.handleSelectDirectory = this.handleSelectDirectory.bind(this);
+        this.handleSelectImage = this.handleSelectImage.bind(this);
+        this.handleSelectVideo = this.handleSelectVideo.bind(this);
+        this.handleSelectMedia = this.handleSelectMedia.bind(this);
+        this.handleSelectAudio = this.handleSelectAudio.bind(this);
+        this.handleSelectLink = this.handleSelectLink.bind(this);
+        this.handleSelectDocument = this.handleSelectDocument.bind(this);
+
         this._page = 1;
         this._filesKey = composeFilesKey(this.props.type, this.props.path);
 
@@ -75,7 +83,7 @@ class FirstScene extends React.Component {
         const {files} = nextProps;
 
         let pathFiles = files.get(this._filesKey);
-        console.log(pathFiles);
+
         if (pathFiles != null && this.props.files.get(this._filesKey) !== pathFiles) {
           let fileCount = pathFiles.get('files').size;
           let canLoadMore = pathFiles.get('hasNextPaging');
@@ -86,6 +94,44 @@ class FirstScene extends React.Component {
             isRefreshing: false,
           });
         }
+    }
+
+    handleSelectMedia(type, name, csServer, url) {
+      this.props.dispatch(changeRoute(`/viewers/media?name=${name}&type=${type}&csServer=${csServer}&path=${url}`,
+                                      this.props.navigator.props.navKey));
+    }
+
+    handleSelectAudio(name, csServer, url) {
+      this.handleSelectMedia('audio', name, csServer, url);
+    }
+    
+    handleSelectVideo(name, csServer, url) {
+      this.handleSelectMedia('video', name, csServer, url);
+    }
+
+    handleSelectDirectory(name: ?string, csServer: string, url: string) {
+      this.props.dispatch(changeRoute(`/files/?name=${name}&csServer=${csServer}&path=${url}`,
+                                      this.props.navigator.props.navKey));
+    }
+
+    handleSelectImage(name, csServer, url) {
+      this.props.dispatch(changeRoute(`/viewers/image?name=${name}&csServer=${csServer}&path=${url}`,
+                                      this.props.navigator.props.navKey));
+    }
+
+    handleSelectLink(name, url) {
+      this.props.dispatch(changeRoute(`/viewers/web?name=${name}&type=link&url=${url}`,
+                                      this.props.navigator.props.navKey));
+    }
+
+    handleSelectDocument(name, csServer, url) {
+      this.props.dispatch(changeRoute(`/viewers/web?name=${name}&type=document&csServer=${csServer}&url=${url}`,
+                                      this.props.navigator.props.navKey));
+    }
+
+    handleSelectHtml(name, csServer, url) {
+      this.props.dispatch(changeRoute(`/viewers/web?name=${name}&type=html&csServer=${csServer}&url=${url}`,
+                                      this.props.navigator.props.navKey));
     }
 
     loadMore() {

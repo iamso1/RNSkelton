@@ -31,7 +31,7 @@ function filterDirectory(data: Object, hasNextPaging: boolean): Promise<[Object,
   return [data, hasNextPaging];
 }
 
-function composeData(csServer: string, data: Object, hasNextPaging: boolean): Promise<[Object, boolean]> {
+function composeData(csServer:  ?string, data: Object, hasNextPaging: boolean): Promise<[Object, boolean]> {
   data.forEach(rec => {
     rec.csServer = csServer;
     if (rec.type === 'Image') {
@@ -46,7 +46,7 @@ function composeData(csServer: string, data: Object, hasNextPaging: boolean): Pr
   return [data, hasNextPaging];
 }
 
-function addMyWebEntity(path: string, data: Object, hasNextPaging: boolean): Promise<[Object, boolean]> {
+function addMyWebEntity(path: ? string, data: Object, hasNextPaging: boolean): Promise<[Object, boolean]> {
   // Only add MyWeb for root path
   if (path == null) {
     data.unshift({
@@ -94,6 +94,7 @@ export function getFileList(csServer: ?string, listPath: ?string, type: ?Resourc
       ps: pageSize,
       o_fields: outputFields.join(','),
     };
+
     if (type) {
       params.type = type;
     } else {
@@ -124,7 +125,6 @@ export function getFileList(csServer: ?string, listPath: ?string, type: ?Resourc
       .then(([data, hasNextPaging]) => filterDirectory(data, hasNextPaging))
       .then(([data, hasNextPaging]) => composeData(queryCsServer, data, hasNextPaging))
       .then(([data, hasNextPaging]) => {
-        console.log(type, listPath);
         dispatch({
           type: ActionTypes.FILE_LIST_RECEIVED,
           path: composeFilesKey(type, listPath),

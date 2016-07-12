@@ -42,6 +42,7 @@ export function login(account: string, password: string): Function {
         })
         .catch(error => {
           console.error('login() error - ' + error);
+
           dispatch({type: ActionTypes.LOGIN_RECEIVED, success: false, errorText: '內部錯誤'});
         });
     };

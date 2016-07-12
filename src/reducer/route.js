@@ -16,6 +16,7 @@ let prevRoutes = ['/main'];
 export default createReducer(initialState, {
     [ActionTypes.ROUTE_CHANGE](state, action) {
         prevRoutes.push(state.url);
+        console.log(action);
         return Object.assign({}, state, {
             url: action.url,
             navKey: action.navKey,

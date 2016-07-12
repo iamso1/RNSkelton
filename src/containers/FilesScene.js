@@ -24,17 +24,19 @@ import InfiniteScrollView from 'react-native-infinite-scroll-view';
 
 import NavBar from '../components/NavBar';
 import FileEntityView from '../components/FileEntityView';
-import Immutable from 'immutable';
+import TextInput from '../components/TextInput';
 import {changeRoute} from '../actions/route';
 import {connect} from 'react-redux';
 
-class FirstScene extends React.Component {
+let Immutable = require('immutable');
+
+class FilesScene extends React.Component {
     static propTypes = {
       navigator: PropTypes.object.isRequired,
       name: PropTypes.string,
       csServer: PropTypes.string,
       path: PropTypes.string,
-      type: PropTypes.oneOf(['Image', 'Video', 'Audio', 'Html', 'Document,Text', 'Link']),
+      type: PropTypes.oneOf(['Image', 'Video', 'Audio', 'Html', 'Document,Text', 'Link', 'Other']),
     };
 
     static defaultProps = {
@@ -71,7 +73,7 @@ class FirstScene extends React.Component {
           canLoadMore: true,
           isRefreshing: false,
           showCreateDirDialog: false,
-          createDirName: '',
+          createDirName:  '',
         };
     }
 
@@ -103,11 +105,11 @@ class FirstScene extends React.Component {
                                       this.props.navigator.props.navKey));
     }
 
-    handleSelectAudio(name, csServer, url) {
+    handleSelectAudio(name: string, csServer: string, url: string) {
       this.handleSelectMedia('audio', name, csServer, url);
     }
 
-    handleSelectVideo(name, csServer, url) {
+    handleSelectVideo(name: string, csServer: string, url: string) {
       this.handleSelectMedia('video', name, csServer, url);
     }
 
@@ -116,22 +118,22 @@ class FirstScene extends React.Component {
                                       this.props.navigator.props.navKey));
     }
 
-    handleSelectImage(name, csServer, url) {
+    handleSelectImage(name: string, csServer: string, url: string) {
       this.props.dispatch(changeRoute(`/viewers/image?name=${name}&csServer=${csServer}&path=${url}`,
                                       this.props.navigator.props.navKey));
     }
 
-    handleSelectLink(name, url) {
+    handleSelectLink(name: string, url: string) {
       this.props.dispatch(changeRoute(`/viewers/web?name=${name}&type=link&url=${url}`,
                                       this.props.navigator.props.navKey));
     }
 
-    handleSelectDocument(name, csServer, url) {
+    handleSelectDocument(name: string, csServer: string, url: string) {
       this.props.dispatch(changeRoute(`/viewers/web?name=${name}&type=document&csServer=${csServer}&url=${url}`,
                                       this.props.navigator.props.navKey));
     }
 
-    handleSelectHtml(name, csServer, url) {
+    handleSelectHtml(name: string, csServer: string, url: string) {
       this.props.dispatch(changeRoute(`/viewers/web?name=${name}&type=html&csServer=${csServer}&url=${url}`,
                                       this.props.navigator.props.navKey));
     }
@@ -304,4 +306,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, null, null, { withRef: true })(FirstScene);
+export default connect(mapStateToProps, null, null, { withRef: true })(FilesScene);

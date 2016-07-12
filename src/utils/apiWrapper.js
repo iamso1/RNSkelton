@@ -32,14 +32,15 @@ export function uploadFile(data): Promise{
     .catch(error => console.warn(error));
 }
 
-export function request(endpoint, method, data = {}, sessionToken = null, urlBase = API_URL_BASE) {
+export function request(endpoint: string, method: string, data: Object = {}, sessionToken: ?string = null, urlBase: string = API_URL_BASE) {
   let uri = new URI(urlBase + endpoint);
+
 
   let methodNormalized = method.toUpperCase();
   let options = {
     method: methodNormalized,
     headers: {
-      'Cookie': `nu_code=${sessionToken};`
+    'Cookie': `nu_code=${sessionToken};`
     }
   };
 
@@ -50,7 +51,7 @@ export function request(endpoint, method, data = {}, sessionToken = null, urlBas
     options.headers['Content-Type'] = 'application/json';
   }
 
-  return fetch(uri.toString(), options);
+    return fetch(uri.toString(), options);
 }
 
 export function getMyCsServer(): Promise<string> {

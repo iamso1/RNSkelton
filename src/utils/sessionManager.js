@@ -27,27 +27,27 @@ class SessionManager {
     }
   }
 
-  get acn() {
+  get acn(): ?string {
     return g_cache && g_cache.acn;
   }
 
-  get sessionToken() {
+  get sessionToken(): ?string {
     return g_cache && g_cache.sessionToken;
   }
 
-  get wnsServer() {
+  get wnsServer(): ?string{
     return g_cache && g_cache.wnsServer;
   }
 
-  get ssn() {
+  get ssn(): ?string {
     return g_cache && g_cache.ssn;
   }
 
-  get sun() {
+  get sun(): ?string {
     return g_cache && g_cache.sun;
   }
 
-  _fillCache(data) {
+  _fillCache(data: Object) {
     let {accountData, sessionToken} = data;
     g_cache = {
       acn: accountData.acn,

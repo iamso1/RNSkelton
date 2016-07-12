@@ -8,10 +8,10 @@ import {
 
 
 export default class RouteBase {
-  getExRoute(routeParams) {
+  getExRoute(routeParams: Object) {
     let self = this;
     return {
-      renderScene(navigator) {
+      renderScene(navigator: Object) {
         return self.renderScene(navigator, routeParams);
       },
       configureScene() {

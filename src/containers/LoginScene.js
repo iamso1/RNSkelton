@@ -25,8 +25,8 @@ class LoginScene extends React.Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.handleSignup = this.handleSignup.bind(this);
     this.state = {
-      account: '',
-      password: '',
+      account: 'horsekit1982@gmail.com',
+      password: 'xup6jo3fup6',
       buttonDisabled: false,
     };
   }
@@ -90,7 +90,7 @@ class LoginScene extends React.Component {
           autoCorrect={false}
           autoCapitalize="none"
           onSubmitEditing={() => { this.refs.textInput_password.blur(); }}
-          onChangeText={(text) => this.setState({password: text})}
+          onChangeText={text => this.setState({password: text})}
           value={this.state.password}
           ref="textInput_password"
         />

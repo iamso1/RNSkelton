@@ -10,8 +10,8 @@ import {
   RouteAuthLogin,
 } from './auth';
 import {
-    FirstRoute
-} from './first';
+    FilesRoute
+} from './files';
 
 class AppRouter {
   constructor() {
@@ -21,7 +21,7 @@ class AppRouter {
       RouteEntry,
       RouteHome,
       RouteAuthLogin,
-      FirstRoute,
+      FilesRoute,
     ].forEach(RouteClass => {
       let routeInstance = new RouteClass();
       let crossroadsRoute = crossroads.addRoute(RouteClass.PATTERN);

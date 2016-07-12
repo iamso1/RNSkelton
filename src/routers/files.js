@@ -6,7 +6,7 @@ import RouteBase from './base';
 import FilesScene from '../containers/FilesScene';
 
 export class FilesRoute extends RouteBase {
-  static PATTERN = '/first/:?query:';
+  static PATTERN = '/files/:?query:';
 
   renderScene(navigator:Object, query: Object) {
     let { name, csServer, path, type } = query || {};

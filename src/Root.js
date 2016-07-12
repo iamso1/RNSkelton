@@ -8,12 +8,12 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import { connect } from 'react-redux';
+import AppRouter from './routers/index';
 import ExNavigator from '@exponent/react-native-navigator';
+import { connect } from 'react-redux';
 import { backRoute } from './actions/route';
 import { navigatorAction } from './utils/navigatorHelper';
-import AppRouter from './routers/index';
-
+import { MenuContext } from 'react-native-menu';
 
 class Root extends React.Component {
   constructor(props) {
@@ -46,13 +46,14 @@ class Root extends React.Component {
   render() {
     let initialRoute = AppRouter.getExRoute(this.props.route.url);
     return (
-      <View style={styles.container}>
+
+      <MenuContext style={styles.container}>
         <ExNavigator
           initialRoute={initialRoute}
           navKey="root"
           showNavigationBar={false}
           ref={(exNavigator) => { this._exNavigator = exNavigator; }}/>
-        </View>
+        </MenuContext>
     );
   }
 

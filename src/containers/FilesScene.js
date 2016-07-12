@@ -20,7 +20,14 @@ import {
   composeFilesKey,
 } from '../actions/files';
 
+import Menu, {
+    MenuOptions,
+    MenuOption,
+    MenuTrigger
+} from 'react-native-menu';
+
 import InfiniteScrollView from 'react-native-infinite-scroll-view';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import NavBar from '../components/NavBar';
 import FileEntityView from '../components/FileEntityView';
@@ -48,7 +55,7 @@ class FilesScene extends React.Component {
         this.loadMore = this.loadMore.bind(this);
         this.refresh = this.refresh.bind(this);
         this.renderFileEntityView = this.renderFileEntityView.bind(this);
-        this.renderCreateDirDialog = this.renderCreateDirDialog.bind(this);
+
         this.handleSelectDirectory = this.handleSelectDirectory.bind(this);
         this.handleSelectImage = this.handleSelectImage.bind(this);
         this.handleSelectVideo = this.handleSelectVideo.bind(this);
@@ -56,6 +63,12 @@ class FilesScene extends React.Component {
         this.handleSelectAudio = this.handleSelectAudio.bind(this);
         this.handleSelectLink = this.handleSelectLink.bind(this);
         this.handleSelectDocument = this.handleSelectDocument.bind(this);
+        this.handleMenuSelect = this.handleMenuSelect.bind(this);
+
+        this.closeCreateDirDialog = this.closeCreateDirDialog.bind(this);
+        this.renderCreateDirDialog = this.renderCreateDirDialog.bind(this);
+
+        this.renderNavRightButtons = this.renderNavRightButtons.bind(this);
 
         this._page = 1;
         this._filesKey = composeFilesKey(this.props.type, this.props.path);
@@ -149,6 +162,10 @@ class FilesScene extends React.Component {
       this.props.dispatch(getFileList(this.props.csServer, this.state.path, this.props.type, ++this._page));
     }
 
+    closeCreateDirDialog() {
+      this.setState({ showCreateDirDialog: false });
+    }
+    
     renderCreateDirDialog() {
       if (!this.state.showCreateDirDialog) { return null; }
 
@@ -191,6 +208,49 @@ class FilesScene extends React.Component {
           onSelectDocument={this.handleSelectDocument}
           onSelectHtml={this.handleSelectHtml}
         />
+      );
+    }
+
+    handleMenuSelect(value) {
+      if (value === 'createDir') {
+        this.setState({ showCreateDirDialog: true });
+      } else if (value === 'uploadFile') {
+            this.uploadFile();
+      }else if(value === 'uploadVideo'){
+            this.uploadVideo();
+      }else if(value === 'setting'){
+            this.props.dispatch(changeRoute(`/settings/`, this.props.navigator.props.navKey));
+      }
+    }
+
+    renderNavRightButtons() {
+      return (
+        <View>
+          <Menu onSelect={this.handleMenuSelect}>
+            <MenuTrigger>
+              <Icon
+                name="ellipsis-h"
+                size={20}
+                color="#ffffff"
+              />
+            </MenuTrigger>
+            <MenuOptions>
+              <MenuOption value="createDir">
+                <Text>新增資料夾</Text>
+              </MenuOption>
+              <MenuOption value="uploadFile">
+                <Text>上傳相片</Text>
+              </MenuOption>
+              <MenuOption value="uploadVideo">
+                <Text>上傳影片</Text>
+              </MenuOption>
+              <MenuOption value="setting">
+                <Text>個人設定</Text>
+              </MenuOption>
+            </MenuOptions>
+          </Menu>
+        </View>
+
       );
     }
 

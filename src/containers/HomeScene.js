@@ -7,6 +7,7 @@ import {
     StyleSheet,
     Text,
     ScrollView,
+    InteractionManager,
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -20,6 +21,7 @@ export default class HomeScene extends React.Component {
         super(props);
         this.state = {
           page: 'files',
+          csServer: '',
         };
       }
 
@@ -27,71 +29,71 @@ export default class HomeScene extends React.Component {
         tabIndex: PropTypes.number,
     };
 
-      static defaultProps = {
+    static defaultProps = {
         tabIndex: 0,
-      };
+    };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <ScrollableTabView
-            initialPage={0}
-            tabBarPosition='bottom'
-            renderTabBar= {() => <TabIcon />}>
-            <View tabLabel={{
-                    icon: 'files-o',
-                    name: '我的檔案'
-                }} style={styles.card}>
-                <TabViewContainer
-                       navKey="files"
-                    initialRouteUrl="/files/"
-                    navigator={this.props.navigator}
-                    ref="tab_0"/>
-            </View>
-            <View tabLabel={{
-                    icon: 'th-list',
-                    name: '檔案列表',
-                }} style={styles.card}>
-                <TabViewContainer
-                       navKey="files"
-                    initialRouteUrl="/files/"
-                    navigator={this.props.navigator}
-                    ref="tab_1"/>
-            </View>
-            <View tabLabel={{
-                    icon: 'comments-o',
-                    name: '聊天室',
-                }} style={styles.card}>
-                <TabViewContainer
-                       navKey="files"
-                    initialRouteUrl="/files/"
-                    navigator={this.props.navigator}
-                    ref="tab_2"/>
-            </View>
-            <View tabLabel={{
-                    icon: 'bell-o',
-                    name: '通知',
-                }} style={styles.card}>
-                <TabViewContainer
-                       navKey="files"
-                    initialRouteUrl="/files/"
-                    navigator={this.props.navigator}
-                    ref="tab_3"/>
-            </View>
-            <View tabLabel={{
-                    icon: 'feed',
-                    name: '動態',
-                }} style={styles.card}>
-                <TabViewContainer
-                       navKey="files"
-                    initialRouteUrl="/files/"
-                    navigator={this.props.navigator}
-                    ref="tab_4"/>
-            </View>
-        </ScrollableTabView>
-      </View>
-    );
-  }
+    render() {
+        return (
+          <View style={styles.container}>
+            <ScrollableTabView
+                initialPage={0}
+                tabBarPosition='bottom'
+                renderTabBar= {() => <TabIcon />}>
+                <View tabLabel={{
+                        icon: 'files-o',
+                        name: '我的檔案'
+                    }} style={styles.card}>
+                    <TabViewContainer
+                           navKey="files"
+                        initialRouteUrl="/files/"
+                        navigator={this.props.navigator}
+                        ref="tab_0"/>
+                </View>
+                <View tabLabel={{
+                        icon: 'th-list',
+                        name: '檔案列表',
+                    }} style={styles.card}>
+                    <TabViewContainer
+                           navKey="files"
+                        initialRouteUrl="/files/"
+                        navigator={this.props.navigator}
+                        ref="tab_1"/>
+                </View>
+                <View tabLabel={{
+                        icon: 'comments-o',
+                        name: '聊天室',
+                    }} style={styles.card}>
+                    <TabViewContainer
+                           navKey="files"
+                        initialRouteUrl="/files/"
+                        navigator={this.props.navigator}
+                        ref="tab_2"/>
+                </View>
+                <View tabLabel={{
+                        icon: 'bell-o',
+                        name: '通知',
+                    }} style={styles.card}>
+                    <TabViewContainer
+                           navKey="files"
+                        initialRouteUrl="/files/"
+                        navigator={this.props.navigator}
+                        ref="tab_3"/>
+                </View>
+                <View tabLabel={{
+                        icon: 'feed',
+                        name: '動態',
+                    }} style={styles.card}>
+                    <TabViewContainer
+                           navKey="files"
+                        initialRouteUrl="/files/"
+                        navigator={this.props.navigator}
+                        ref="tab_4"/>
+                </View>
+            </ScrollableTabView>
+          </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({

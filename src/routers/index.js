@@ -12,6 +12,9 @@ import {
 import {
     FilesRoute
 } from './files';
+import {
+    RouteSettings,
+} from './setting';
 
 class AppRouter {
   constructor() {
@@ -21,7 +24,9 @@ class AppRouter {
       RouteEntry,
       RouteHome,
       RouteAuthLogin,
+      RouteSettings,
       FilesRoute,
+
     ].forEach(RouteClass => {
       let routeInstance = new RouteClass();
       let crossroadsRoute = crossroads.addRoute(RouteClass.PATTERN);

@@ -5,7 +5,6 @@ import * as ActionTypes from '../constants/ActionTypes';
 
 
 export function changeRoute(url: string, navKey: string): {type: string, url: string} {
-    console.log(navKey, url);
   return {
     type: ActionTypes.ROUTE_CHANGE,
     url,

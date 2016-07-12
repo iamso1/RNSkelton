@@ -5,9 +5,18 @@ import React from 'react';
 import {
     Linking,
 } from 'react-native';
-import { connect } from 'react-redux';
-import { replaceRoute } from '../actions/route';
-import { checkAppSessionState } from '../actions/auth';
+import {
+    connect
+} from 'react-redux';
+import {
+    replaceRoute
+} from '../actions/route';
+import {
+    checkAppSessionState
+} from '../actions/auth';
+import {
+    getRemoteSetting,
+} from '../actions/settings';
 import AppSessionState from '../constants/AppSessionState';
 import WebsocketManager from '../utils/websocketManager';
 
@@ -31,6 +40,7 @@ class EntryScene extends React.Component {
               break;
             case AppSessionState.Logon:
               WebsocketManager.connect();
+              this.props.dispatch(getRemoteSetting());
               this._getRouteWithDeepLink().then(route => {
                 this.props.dispatch(replaceRoute(route, this.props.navigator.props.navKey));
               });

@@ -8,6 +8,7 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
+
 import AppRouter from './routers/index';
 import ExNavigator from '@exponent/react-native-navigator';
 import { connect } from 'react-redux';
@@ -21,6 +22,7 @@ class Root extends React.Component {
   }
 
   componentDidMount() {
+
     if (Platform.OS === 'android') {
       BackAndroid.addEventListener('hardwareBackPress', () => {
         let currentRoute = this._exNavigator.navigationContext.currentRoute;

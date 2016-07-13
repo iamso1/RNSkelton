@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import Media from 'react-native-video';
-import Progress from 'react-native-progress';
+
 import {
   getFileUrlForViewerVideo,
   getFileUrlForViewerAudio,
@@ -17,6 +17,7 @@ import {
 } from '../actions/file';
 import NavBar from '../components/NavBar';
 
+let Progress = require('react-native-progress');
 
 export default class ViewerMediaScene extends React.Component {
   constructor(props) {
@@ -61,18 +62,19 @@ export default class ViewerMediaScene extends React.Component {
         />
 
         <View style={styles.spinner}>
-          <Progress.Circle
-            size={50}
-            color="#00a5e6"
-            animated={true}
-            indeterminate={true}
-            borderWidth={3}
-          />
+
         </View>
       </View>
     );
   }
-
+/**
+<Progress.Circle
+  size={50}
+  color="#00a5e6"
+  animated={true}
+  indeterminate={true}
+  borderWidth={3} />
+**/
   render() {
     const mediaUrl = this.props.viewerMedia.get('url');
 

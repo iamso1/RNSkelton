@@ -15,7 +15,12 @@ import {
 import {
     RouteSettings,
 } from './setting';
-
+import {
+    RouteViewerImage,
+    RouteViewerMedia,
+    RouteViewerWeb,
+}
+from './viewers';
 class AppRouter {
   constructor() {
     this._crossroadsRouteMatched = this._crossroadsRouteMatched.bind(this);
@@ -25,6 +30,9 @@ class AppRouter {
       RouteHome,
       RouteAuthLogin,
       RouteSettings,
+      RouteViewerWeb,
+      RouteViewerMedia,
+      RouteViewerImage,
       FilesRoute,
 
     ].forEach(RouteClass => {

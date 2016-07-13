@@ -27,7 +27,11 @@ headers:
 
 #### Input
 
+    None
+
 #### Output
+
+    type: json
 
 #### Example
 

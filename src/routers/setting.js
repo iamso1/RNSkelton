@@ -10,7 +10,6 @@ export class RouteSettings extends RouteBase {
   static PATTERN = '/settings/:?query:';
 
   renderScene(navigator: Object, query: Object) {
-      console.log(SettingsScene);
     return (
       <SettingsScene
         navigator={navigator} />

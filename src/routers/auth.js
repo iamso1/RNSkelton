@@ -9,7 +9,7 @@ import LoginScene from '../containers/LoginScene';
 export class RouteAuthLogin extends RouteBase {
   static PATTERN = '/auth/login/:?query:';
 
-  renderScene(navigator, query) {
+  renderScene(navigator: Object, query: Object) : Function{
     return (
       <LoginScene
         navigator={navigator}

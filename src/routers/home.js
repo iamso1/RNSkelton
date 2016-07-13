@@ -10,7 +10,7 @@ import HomeScene from '../containers/HomeScene';
 export class RouteEntry extends RouteBase {
   static PATTERN = '/:?query:';
 
-  renderScene(navigator, query) {
+  renderScene(navigator: Object, query: Object) {
     return (
       <EntryScene
         navigator={navigator}/>
@@ -18,7 +18,7 @@ export class RouteEntry extends RouteBase {
   }
 
   // Special flag for Android back button to exit app
-  get isHomeRoute() {
+  get isHomeRoute(): bool {
     return true;
   }
 }
@@ -27,7 +27,7 @@ export class RouteEntry extends RouteBase {
 export class RouteHome extends RouteBase {
   static PATTERN = '/main/:?query:';
 
-  renderScene(navigator, query) {
+  renderScene(navigator: Object, query: Object) {
     let tabIndex = 0;
     if (query) {
       if (query.tabIndex) {
@@ -42,7 +42,7 @@ export class RouteHome extends RouteBase {
   }
 
   // Special flag for Android back button to exit app
-  get isHomeRoute() {
+  get isHomeRoute(): bool {
     return true;
   }
 }

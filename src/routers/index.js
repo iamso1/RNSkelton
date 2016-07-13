@@ -21,6 +21,10 @@ import {
     RouteViewerWeb,
 }
 from './viewers';
+import {
+    RouteNotifications,
+} from './notifications';
+
 class AppRouter {
   constructor() {
     this._crossroadsRouteMatched = this._crossroadsRouteMatched.bind(this);
@@ -33,6 +37,7 @@ class AppRouter {
       RouteViewerWeb,
       RouteViewerMedia,
       RouteViewerImage,
+      RouteNotifications,
       FilesRoute,
 
     ].forEach(RouteClass => {

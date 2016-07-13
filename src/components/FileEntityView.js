@@ -105,7 +105,6 @@ export default class FileEntityView extends React.Component {
               this.props.onSelectHtml(file.get('filename'), file.get('csServer'), file.get('url'));
             });
       default:
-      console.log(file.toObject());
         console.log('Unsupported file type - ' + file.toJS());
         return;
     }

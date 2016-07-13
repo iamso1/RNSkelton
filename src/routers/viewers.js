@@ -17,7 +17,6 @@ export class RouteViewerImage extends RouteBase {
 
   renderScene(navigator: Object, query: Object): Function {
     const { name, csServer, path } = query;
-    console.log(query);
     if (!query || !path || !csServer) {
       return <View><Text>Invalid parameters.</Text></View>;
     }
@@ -79,7 +78,7 @@ export class RouteViewerWeb extends RouteBase {
       props.url = url;
       props.csServer = csServer;
     }
-    console.log(query);
+
     if (!isValidParam) {
       return <View><Text>Invalid parameters.</Text></View>;
     }

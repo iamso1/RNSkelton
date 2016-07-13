@@ -45,7 +45,7 @@ export default class HomeScene extends React.Component {
                         name: '我的檔案'
                     }} style={styles.card}>
                     <TabViewContainer
-                           navKey="files"
+                        navKey="files"
                         initialRouteUrl="/files/"
                         navigator={this.props.navigator}
                         ref="tab_0"/>
@@ -55,7 +55,7 @@ export default class HomeScene extends React.Component {
                         name: '檔案列表',
                     }} style={styles.card}>
                     <TabViewContainer
-                           navKey="files"
+                        navKey="group"
                         initialRouteUrl="/files/"
                         navigator={this.props.navigator}
                         ref="tab_1"/>
@@ -65,7 +65,7 @@ export default class HomeScene extends React.Component {
                         name: '聊天室',
                     }} style={styles.card}>
                     <TabViewContainer
-                           navKey="files"
+                        navKey="chatbox"
                         initialRouteUrl="/files/"
                         navigator={this.props.navigator}
                         ref="tab_2"/>
@@ -75,8 +75,8 @@ export default class HomeScene extends React.Component {
                         name: '通知',
                     }} style={styles.card}>
                     <TabViewContainer
-                           navKey="files"
-                        initialRouteUrl="/files/"
+                        navKey="notifications"
+                        initialRouteUrl="/notifications/"
                         navigator={this.props.navigator}
                         ref="tab_3"/>
                 </View>
@@ -85,7 +85,7 @@ export default class HomeScene extends React.Component {
                         name: '動態',
                     }} style={styles.card}>
                     <TabViewContainer
-                           navKey="files"
+                        navKey="feed"
                         initialRouteUrl="/files/"
                         navigator={this.props.navigator}
                         ref="tab_4"/>

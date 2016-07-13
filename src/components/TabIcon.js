@@ -20,6 +20,7 @@ class TabIcon extends React.Component{
 
     constructor(props){
         super(props);
+        this.setAnimationValue = this.setAnimationValue.bind(this);
         this.tabIcons = [];
     }
 
@@ -28,14 +29,14 @@ class TabIcon extends React.Component{
     }
 
     setAnimationValue({ value, }) {
-      this.tabIcons.forEach((icon, i) => {
-        const progress = (value - i >= 0 && value - i <= 1) ? value - i : 1;
-        icon.setNativeProps({
-          style: {
-            color: this.iconColor(progress),
-          },
+        this.tabIcons.forEach((icon, i) => {
+            const progress = (value - i >= 0 && value - i <= 1) ? value - i : 1;
+            icon.setNativeProps({
+              style: {
+                color: this.iconColor(progress),
+              },
+            });
         });
-      });
     }
     //color between rgb(59,89,152) and rgb(204,204,204)
     iconColor(progress) {

@@ -32,8 +32,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import NavBar from '../components/NavBar';
 import FileEntityView from '../components/FileEntityView';
 import TextInput from '../components/TextInput';
+import { ImagePickerManager } from 'NativeModules';
+
 import {changeRoute} from '../actions/route';
 import {connect} from 'react-redux';
+import { uploadImage } from '../utils/apiWrapper';
 
 let Immutable = require('immutable');
 
@@ -165,7 +168,7 @@ class FilesScene extends React.Component {
     closeCreateDirDialog() {
       this.setState({ showCreateDirDialog: false });
     }
-    
+
     renderCreateDirDialog() {
       if (!this.state.showCreateDirDialog) { return null; }
 
@@ -250,10 +253,73 @@ class FilesScene extends React.Component {
             </MenuOptions>
           </Menu>
         </View>
-
       );
     }
 
+    uploadFile() {
+      const options = {
+        title: '上傳檔案',
+        cancelButtonTitle: '取消',
+        takePhotoButtonTitle: '拍照上傳',
+        chooseFromLibraryButtonTitle: '從相簿選取',
+        noData: true,
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+      };
+      ImagePickerManager.showImagePicker(options, (resp) => {
+        if (resp.didCancel) {
+        } else if (resp.error) {
+          console.warn('ImagePickerManager error - ' + resp.error);
+        } else {
+          this.setState({ isRefreshing: true });
+          const fileUri = resp.uri;
+          const fileName = fileUri.split('/').pop();
+          uploadImage(this.state.csServer, this.state.path, fileUri, fileName)
+            .then(() => {
+              this.refresh();
+            })
+            .catch(error => {
+              console.warn('Unable to upload image - ' + error);
+            });
+        }
+      });
+    }
+
+    uploadVideo() {
+      const options = {
+        title: '上傳檔案',
+        cancelButtonTitle: '取消',
+        takePhotoButtonTitle: '錄影上傳',
+        chooseFromLibraryButtonTitle: '從相簿選取',
+      mediaType: 'video',
+      videoQuality: 'high',
+      durationLimit: 90,
+        storageOptions: {
+          skipBackup: true,
+          path: 'video',
+        },
+      };
+      ImagePickerManager.showImagePicker(options, (resp) => {
+        if (resp.didCancel) {
+        } else if (resp.error) {
+          console.warn('ImagePickerManager error - ' + resp.error);
+        } else {
+          this.setState({ isRefreshing: true });
+          const fileUri = resp.uri;
+          const fileName = fileUri.split('/').pop();
+          uploadImage(this.state.csServer, this.state.path, fileUri, fileName)
+            .then(() => {
+              this.refresh();
+            })
+            .catch(error => {
+              console.warn('Unable to upload image - ' + error);
+            });
+        }
+      });
+    }
+    
     render() {
         return (
             <View style={styles.container}>

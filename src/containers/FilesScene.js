@@ -67,6 +67,7 @@ class FilesScene extends React.Component {
         this.handleSelectLink = this.handleSelectLink.bind(this);
         this.handleSelectDocument = this.handleSelectDocument.bind(this);
         this.handleMenuSelect = this.handleMenuSelect.bind(this);
+        this.handleSelectHtml = this.handleSelectHtml.bind(this);
 
         this.closeCreateDirDialog = this.closeCreateDirDialog.bind(this);
         this.renderCreateDirDialog = this.renderCreateDirDialog.bind(this);
@@ -150,7 +151,8 @@ class FilesScene extends React.Component {
     }
 
     handleSelectHtml(name: string, csServer: string, url: string) {
-      this.props.dispatch(changeRoute(`/viewers/web?name=${name}&type=html&csServer=${csServer}&url=${url}`,
+        console.log(name, csServer, url);
+        this.props.dispatch(changeRoute(`/viewers/web?name=${name}&type=html&csServer=${csServer}&url=${url}`,
                                       this.props.navigator.props.navKey));
     }
 
@@ -319,7 +321,7 @@ class FilesScene extends React.Component {
         }
       });
     }
-    
+
     render() {
         return (
             <View style={styles.container}>

@@ -1,7 +1,7 @@
 package com.ncumailapp;
 
 import com.facebook.react.ReactActivity;
-import com.brentvatne.RCTVideo.ReactVideoPackage;
+import com.brentvatne.react.ReactVideoPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.oblador.vectoricons.VectorIconsPackage;

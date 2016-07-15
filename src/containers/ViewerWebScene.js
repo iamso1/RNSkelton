@@ -24,9 +24,12 @@ var WEBVIEW_REF = 'webview';
 export default class ViewerWebScene extends React.Component {
   constructor(props) {
     super(props);
+    this.renderNavBackView = this.renderNavBackView.bind(this);
+    this.renderNavForwardView = this.renderNavForwardView.bind(this);
     this.handleNavBack = this.handleNavBack.bind(this);
     this.handleNavForward = this.handleNavForward.bind(this);
     this.handleNavigationStateChange = this.handleNavigationStateChange.bind(this);
+
     this.state = {
       navBackEnabled: false,
       navForwardEnabled: false,
@@ -189,7 +192,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: '#888',
-    marginBottom: 49,
     paddingLeft: 30,
     paddingRight: 30,
     alignItems: 'center',

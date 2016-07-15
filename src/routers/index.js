@@ -12,6 +12,7 @@ import {
 import {
     RouteFiles,
     RouteFileGroups,
+    RouteGridImage,
 } from './files';
 import {
     RouteSettings,
@@ -41,6 +42,7 @@ class AppRouter {
           RouteNotifications,
           RouteFiles,
           RouteFileGroups,
+          RouteGridImage,
         ].forEach(RouteClass => {
           let routeInstance = new RouteClass();
           let crossroadsRoute = crossroads.addRoute(RouteClass.PATTERN);

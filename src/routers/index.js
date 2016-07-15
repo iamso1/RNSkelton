@@ -26,28 +26,28 @@ import {
 } from './notifications';
 
 class AppRouter {
-  constructor() {
-    this._crossroadsRouteMatched = this._crossroadsRouteMatched.bind(this);
+    constructor() {
+        this._crossroadsRouteMatched = this._crossroadsRouteMatched.bind(this);
 
-    [
-      RouteEntry,
-      RouteHome,
-      RouteAuthLogin,
-      RouteSettings,
-      RouteViewerWeb,
-      RouteViewerMedia,
-      RouteViewerImage,
-      RouteNotifications,
-      FilesRoute,
+        [
+          RouteEntry,
+          RouteHome,
+          RouteAuthLogin,
+          RouteSettings,
+          RouteViewerWeb,
+          RouteViewerMedia,
+          RouteViewerImage,
+          RouteNotifications,
+          FilesRoute,
 
-    ].forEach(RouteClass => {
-      let routeInstance = new RouteClass();
-      let crossroadsRoute = crossroads.addRoute(RouteClass.PATTERN);
-      crossroadsRoute._appRoute = routeInstance;
-    });
+        ].forEach(RouteClass => {
+          let routeInstance = new RouteClass();
+          let crossroadsRoute = crossroads.addRoute(RouteClass.PATTERN);
+          crossroadsRoute._appRoute = routeInstance;
+        });
 
-    crossroads.routed.add(this._crossroadsRouteMatched);
-  }
+        crossroads.routed.add(this._crossroadsRouteMatched);
+    }
 
   _crossroadsRouteMatched(request, data) {
     let params = data.params[0];

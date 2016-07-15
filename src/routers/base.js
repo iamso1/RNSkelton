@@ -10,7 +10,7 @@ import {
 export default class RouteBase {
   getExRoute(routeParams: Object) {
     let self = this;
-    console.log(self);
+    
     return {
       renderScene(navigator: Object) {
         return self.renderScene(navigator, routeParams);

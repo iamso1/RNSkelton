@@ -56,7 +56,7 @@ export default class HomeScene extends React.Component {
                     }} style={styles.card}>
                     <TabViewContainer
                         navKey="group"
-                        initialRouteUrl="/files/"
+                        initialRouteUrl="/fileGroups/"
                         navigator={this.props.navigator}
                         ref="tab_1"/>
                 </View>

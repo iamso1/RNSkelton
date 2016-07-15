@@ -10,7 +10,8 @@ import {
   RouteAuthLogin,
 } from './auth';
 import {
-    FilesRoute
+    RouteFiles,
+    RouteFileGroups,
 } from './files';
 import {
     RouteSettings,
@@ -38,8 +39,8 @@ class AppRouter {
           RouteViewerMedia,
           RouteViewerImage,
           RouteNotifications,
-          FilesRoute,
-
+          RouteFiles,
+          RouteFileGroups,
         ].forEach(RouteClass => {
           let routeInstance = new RouteClass();
           let crossroadsRoute = crossroads.addRoute(RouteClass.PATTERN);

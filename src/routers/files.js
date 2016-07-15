@@ -6,6 +6,7 @@ import RouteBase from './base';
 import FilesScene from '../containers/FilesScene';
 import FileGroupsScene from '../containers/FileGroupsScene';
 import GridImageScene from '../containers/GridImageScene';
+import GridVideoScene from '../containers/GridVideoScene';
 
 export class RouteFiles extends RouteBase {
   static PATTERN = '/files/:?query:';
@@ -50,7 +51,7 @@ export class RouteGridImage extends RouteBase {
 export class RouteGridVideo extends RouteBase {
   static PATTERN = '/grids/video:?query:';
 
-  renderScene(navigator, query) {
+  renderScene(navigator: Object, query: Object = {}) {
     return (
       <GridVideoScene
         navigator={navigator} />

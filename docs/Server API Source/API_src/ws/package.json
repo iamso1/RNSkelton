@@ -1,0 +1,25 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "async": "^1.5.0",
+    "body-parser": "^1.14.1",
+    "colors": "^1.1.2",
+    "ejs": "0.8.5",
+    "ejs-locals": "1.0.2",
+    "express": "^3.21.2",
+    "image-size": "^0.4.0",
+    "md5": "^2.1.0",
+    "mongodb": "^2.0.47",
+    "multer": "^1.1.0",
+    "request": "^2.65.0",
+    "serve-favicon": "^2.3.0",
+    "temp": "^0.8.3",
+    "url-join": "0.0.1",
+    "ws": "^1.0.1"
+  }
+}

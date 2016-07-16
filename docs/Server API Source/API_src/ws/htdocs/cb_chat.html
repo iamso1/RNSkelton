@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title> 聊天室 </title>
+<!--****** 共用 ******CSS -->
+<link rel="stylesheet" type="text/css" href="/tpl/jquery/jquery-ui-1.11.4/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/tpl/bootstrap-3.2.0-dist/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/tpl/font-awesome/css/font-awesome.css" />
+<link rel="stylesheet" type="text/css" href="/css/fg.menu.css" />
+
+<!--*******共用 JS******-->
+<script src="/tpl/jquery/jquery-1.11.2.js"></script>
+<script src="/tpl/jquery/jquery-ui-1.11.4/jquery-ui.js"></script>
+<script src="/tpl/bootstrap-3.2.0-dist/js/bootstrap.js"></script>
+<script src="/js/fg.menu2.js"></script>
+<script src="/js/RecordRTC.js"></script>
+<script src="/js/getScreenId.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/js/rs_websocket.css" />
+<link rel="stylesheet" type="text/css" href="cb_base.css" />
+<link rel="stylesheet" type="text/css" href="cb_chat.css" />
+<script type="text/javascript" src="/js/rs_tools_lib.js"></script>
+<script type="text/javascript" src="cb_tools_lib.js"></script>
+<script type="text/javascript" src="/js/rs_pushurl_lib.js"></script>
+<script type="text/javascript" src="/js/rs_ws_lib.js"></script>
+<script type="text/javascript" src="/js/rs_webrtc.js"></script>
+<script type="text/javascript" src="rs_webchat_lib.js"></script>
+<script type="text/javascript" src="cb_chat.js"></script>
+
+
+</head>
+<body id="cb_chat">
+
+<button id="bnTest" style="display:none;">Test</button>
+
+
+<div id="se_chatbox">
+	<div id="chatbox_dlg" class="cb_chatbox_dlg">
+		
+		<div class="ui-dialog-titlebar cb_dlg_title">
+			<span class="ui-dialog-title"></span>
+		</div>
+		
+		<div id="webrtc_dlg" class="webrtc_dlg"></div>
+		
+		<div class="cb_dlg">
+			<div class="cb_input_zone">
+				<div class="se_add_friend">
+					<table cellpadding=0 cellspacing=0 border=0><tr>
+						<td width="95%">
+							<label>
+								<!-- User Items -->
+								<div class="user_items"></div>
+								<!-- User Input -->
+								<input id="in_add_friend" type="text">
+							</label>
+							<!-- Dropdown Items -->
+							<ul class="dropdown scrollbar"></ul>
+						</td>
+						<td><button id="bnOK">完成</button></td>
+					</tr></table>
+				</div>
+				<div class="se_edit_title">
+					<table cellpadding=0 cellspacing=0 border=0><tr>
+						<td width="95%">
+							<label>
+								<input id="in_edit_title" type="text">
+							</label>
+						</td>
+						<td><button id="bnOK">完成</button></td>
+					</tr></table>
+				</div>
+			</div>
+			<div class="cb_main_zone scrollbar">
+				<div class="items"></div>
+			</div>
+			<div id="se_sel_bar" class="se_select_bar">
+				<a class="btn btn-default set" href="#" rel="set"><i class="fa fa-cog"></i><span class="name">設定</span></a>
+				<a class="btn btn-default add_friend" href="#" rel="add_friend"><i class="fa fa-user-plus"></i><span class="name">加朋友進來</span></a>
+				<a class="btn btn-default edit_title" href="#" rel="edit_title"><i class="fa fa-pencil-square-o"></i><span class="name">編輯聊天室名稱</span></a>
+				<a class="btn btn-default edit_friend" href="#" rel="edit_friend"><i class="fa fa-users"></i><span class="name">聊天室成員</span></a>
+				<a class="btn btn-default" href="#" rel="del_msg"><i class="fa fa-trash-o"></i><span class="name">刪除對話</span></a>
+				<a class="btn btn-default quit" href="#" rel="quit"><i class="fa fa-arrow-circle-right"></i><span class="name">離開聊天室</span></a>
+				<div class="video_bar">
+					<a class="btn btn-default" href="#" rel="callPhone"><i class="fa fa-phone"></i><span class="name">免費通話</span></a>
+					<a class="btn btn-default" href="#" rel="callVideo"><i class="fa fa-video-camera"></i><span class="name">視訊通話</span></a>
+				</div>
+			</div>
+			<div id="se_upload_bar" class="se_select_bar">
+				<a class="btn btn-default" href="#" rel="sel_img"><i class="fa fa-picture-o"></i><span class="name">選擇照片</span></a>
+				<a class="btn btn-default" href="#" rel="sel_video"><i class="fa fa-file-video-o"></i><span class="name">選擇影片</span></a>
+				<a class="btn btn-default" href="#" rel="sel_file"><i class="fa fa-file-o"></i><span class="name">選擇檔案</span></a>
+				<a class="btn btn-default" href="#" rel="film_img"><i class="fa fa-camera"></i><span class="name">拍攝照片</span></a>
+				<a class="btn btn-default" href="#" rel="film_video"><i class="fa fa-video-camera"></i><span class="name">拍攝影片</span></a>
+				<a class="btn btn-default" href="#" rel="film_audio"><i class="fa fa-microphone"></i><span class="name">語音訊息</span></a>
+			</div>
+			<div class="cb_bottom_bar">
+				<div class="cb_input">
+					<div class="se_left">
+						<a href="#" id="bnAddFile" class="bnt uploader">
+							<i class="fa fa-plus"></i>
+							<input name="file" type="file" multiple="">
+						</a>
+					</div>
+					<div class="input"><textarea placeholder="輸入訊息..."></textarea></div>
+					<a href="#" id="bnSend" class="bnt"><i class="fa fa-paper-plane"></i></a>
+				</div>
+				<div class="attach edit"></div>
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+</body>
+</html>

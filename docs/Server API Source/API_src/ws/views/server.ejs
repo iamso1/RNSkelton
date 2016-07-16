@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Connections Info </title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="text/javascript" src="/tpl/jquery/jquery-1.11.2.js"></script>
+<script type="text/javascript" src="/js/rs_tools_lib.js"></script>
+<script type="text/javascript" src="/js/server.js"></script>
+
+<script>
+var gUsers = JSON.parse(B_HTMLDecode("<%= users %>"));
+var gCBs = JSON.parse(B_HTMLDecode("<%= cbs %>"));
+</script>
+
+<style>
+h3{margin-bottom:4px;}
+.title{min-width:65px; display:inline-block;}
+input[type=text]{min-width:400px;}
+</style>
+
+</head>
+<body>
+
+	<h3> Connections Info: </h3>
+	<div id="se_msg"></div>
+	<hr>
+
+</body>
+</html>

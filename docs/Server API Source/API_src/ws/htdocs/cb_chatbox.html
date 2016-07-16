@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title> 聊天室 </title>
+<!--****** 共用 ******CSS -->
+<link rel="stylesheet" type="text/css" href="/tpl/jquery/jquery-ui-1.11.4/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/tpl/bootstrap-3.2.0-dist/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/tpl/font-awesome/css/font-awesome.css" />
+
+<!--*******共用 JS******-->
+<script src="/tpl/jquery/jquery-1.11.2.js"></script>
+<script src="/tpl/jquery/jquery-ui-1.11.4/jquery-ui.js"></script>
+<script src="/tpl/bootstrap-3.2.0-dist/js/bootstrap.js"></script>
+<script src="/js/RecordRTC.js"></script>
+<script src="/js/getScreenId.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/js/rs_websocket.css" />
+<link rel="stylesheet" type="text/css" href="cb_base.css" />
+<link rel="stylesheet" type="text/css" href="cb_chatbox.css" />
+<script type="text/javascript" src="/js/rs_tools_lib.js"></script>
+<script type="text/javascript" src="/js/rs_ws_lib.js"></script>
+<script type="text/javascript" src="/js/rs_webrtc.js"></script>
+<script type="text/javascript" src="rs_webchat.js"></script>
+<script type="text/javascript" src="cb_tools_lib.js"></script>
+<script type="text/javascript" src="cb_chatbox.js"></script>
+
+
+</head>
+<body>
+
+<div id="se_not_warning">
+	<p>聊天室軟體建議使用 Android 5.0 以上的版本<p>
+	<p>使用 Android 5.0 以下版本必須要搭配 Chrome 瀏覽器才能正常使用。</p>
+	<p>
+		前往安裝：<a href="https://play.google.com/store/apps/details?id=com.android.chrome">Chrome 瀏覽器</a>
+	</p>
+</div>
+<div id="se_chatbox">
+	<div class="se_top_bar text-center">
+		<a class="btn btn-default" href="#" rel="list_friend"><i class="fa fa-user"></i></a>&nbsp;&nbsp;
+		<a class="btn btn-default" href="#" rel="list_chat"><i class="fa fa-commenting"></i></a>&nbsp;&nbsp;
+	</div>
+	<div class="se_main scrollbar">
+		<div class="se_lists">
+		
+			<ul class="se_friend items menu_msg_new list-group"></ul>
+			
+			<ul class="se_chat items menu_msg_new list-group"></ul>
+			
+		</div>
+		<div class="se_chatbox">
+		
+			<div class="cb_chatbox_dlg">
+				<div class="cb_dlg_title"></div>
+				<div class="cb_dlg"></div>
+			</div>
+			
+		<div>
+	</div>
+</div>
+
+</body>
+</html>

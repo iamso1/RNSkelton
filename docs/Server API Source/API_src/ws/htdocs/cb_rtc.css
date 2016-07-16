@@ -1,0 +1,37 @@
+@charset "utf-8";
+body {
+	margin:0;
+	padding:0;
+	font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+	font-size: 13px;
+}
+
+
+
+
+/*** JQuery ***/
+.ui-widget { font-size:1em; }
+.ui-icon-blue {background-image: url(/css/images/ui-icons_2e83ff_256x240.png) !important; }
+.ui-icon { display: inline-block; vertical-align: middle; }
+.ui-icon2 { display: inline-block; vertical-align: middle; background-position: 16px 16px; }
+.ui-icon2-down { background-position: -64px -16px; }
+.ui-icon2-up { background-position: 0 -16px; }
+.ui-icon-check { background-position: -64px -144px !important; }
+.ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text  { padding:2px; }
+.ui-button-text-icon-primary .ui-button-text, .ui-button-text-icons .ui-button-text { padding-top:2px; padding-bottom:2px; }
+.ui-button-text-icon-primary.select .ui-button-text { background-color:#fff; }
+.ui-button-down { position:relative; }
+.ui-button-down .ui-button-icon-secondary { position:absolute; top:4px; right:5px; }
+
+.ui-tooltip-content { overflow:hidden; }
+.ui-dialog .ui-dialog-titlebar { padding:2px 12px; }
+/*** fg.menu.js ***/
+.fg-menu-container { padding:1px; max-height: 300px; overflow-y: auto; }
+.fg-menu a { white-space:nowrap !important }
+.fg-menu a span { display: inline-block; }
+.menu-icon { display: inline-block !important; text-indent: 0px; margin-right: 4px; background-position: 16px 0; }
+.menu-icon2 { display: inline-block !important; text-indent: 0px; margin-right: 4px; }
+.menu-icon-sel { background-position: -80px -144px; } 
+.menu-icon-check { background-position: -64px -144px; } 
+/* Drag Item */
+.item.dragover, .tv_item_info.dragover {background:#FC3;} 

@@ -1,0 +1,34 @@
+@charset "utf-8";
+body {
+	margin:0;
+	padding:0;
+	font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+	font-size: 13px;
+}
+
+#cb_chat .cb_chatbox_dlg { position: initial !important; margin:0 !important; }
+#cb_chat .cb_bottom_bar { position:initial; }
+#cb_chat .cb_bottom_bar .cb_input { white-space:nowrap; position: relative; padding:4px 6px 2px 6px; min-height: 32px; }
+#cb_chat .cb_bottom_bar .cb_input .input { margin-left: 40px; margin-right:40px; }
+#cb_chat .cb_bottom_bar .cb_input .se_left { display: inline-block; position: absolute; left: 0; top: 0; height: 100%; width: 40px; background-color: #03A9F4; color: #fff;}
+#cb_chat .cb_bottom_bar .cb_input .se_left #bnAddFile { position: absolute; left: 50%; top: 50%; margin-left: -10px; margin-top: -10px; color: #fff; padding: 1px 5px; cursor:pointer; }
+#cb_chat .cb_bottom_bar .cb_input #bnSend { padding: 8px; background-color: #03A9F4; color: #fff; width: 40px; height: 100%; display: inline-block; position: absolute; right: 0; top: 0; cursor:pointer; }
+#cb_chat .cb_bottom_bar .cb_input #bnSend .fa { position: absolute; right: 15px; top: 50%; margin-top: -6px; }
+#cb_chat .cb_main_zone { margin-bottom:0 !important; }
+
+#cb_chat .se_select_bar { display:none; position: absolute; left: 0; top: 0; width: 100%; text-align: left; background-color: #fff; border-bottom: solid 1px #ccc; padding: 8px; }
+#cb_chat .se_select_bar .btn { border:0; margin: 2px 0; min-width: 82px; padding: 6px; }
+#cb_chat .se_select_bar .btn .fa { font-size:18px; font-size: 24px; }
+#cb_chat .se_select_bar .btn .name { display:block; font-size: 12px; }
+#cb_chat .se_select_bar .video_bar { text-align:center; border-top: solid 1px #eee; margin:8px -8px -8px -8px; }
+#cb_chat .se_select_bar .video_bar .btn { width:49%; margin:2px 0; }
+#cb_chat .se_select_bar .video_bar .btn .fa { vertical-align: middle; margin-right: 6px; }
+#cb_chat .se_select_bar .video_bar .btn .name { display: initial; font-size: 16px; }
+
+#cb_chat .push_url { margin:0; }
+
+
+#menu_cb_sel i.fa { margin-right: 4px; font-size: 16px; width: 16px; height: 16px; vertical-align: middle; }
+
+
+

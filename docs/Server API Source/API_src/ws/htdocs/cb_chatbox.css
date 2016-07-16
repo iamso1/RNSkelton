@@ -1,0 +1,15 @@
+@charset "utf-8";
+body {
+	margin:0;
+	padding:0;
+	font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+	font-size: 13px;
+}
+
+.se_top_bar { padding:6px; border-bottom: 1px solid #ddd; }
+.se_top_bar .btn { border:0; }
+
+.menu_msg_new .item { padding:4px; overflow: hidden; }
+.se_friend.menu_msg_new .msg_content { margin-top:6px; }
+
+#se_not_warning { display:none; padding: 16px; font-size: 16px; }

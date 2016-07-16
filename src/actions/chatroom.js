@@ -28,9 +28,10 @@ export function getRoomDetail(cid: string, page: number = 1, pageSize: number = 
     };
 }
 
-export function getRoomsList(page: number = 1, pageSize: number = 100): Function {
+export function getRoomsList(page: number = 1, pageSize: number = 1): Function {
     return (dispatch, getState) => {
         return WebsocketManager.send("cb_getList").then((resp) => {
+            console.log(resp.recs);
             dispatch({
                 type: ActionTypes.CHATROOM_GET_LIST_REQUEST,
                 rooms: resp.recs,

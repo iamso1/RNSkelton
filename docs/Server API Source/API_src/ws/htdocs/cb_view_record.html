@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title> 視訊通話 </title>
+<!--****** 共用 ******CSS -->
+<link rel="stylesheet" type="text/css" href="/tpl/jquery/jquery-ui-1.11.4/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/tpl/bootstrap-3.2.0-dist/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/tpl/font-awesome/css/font-awesome.css" />
+
+<!--*******共用 JS******-->
+<script src="/tpl/jquery/jquery-1.11.2.js"></script>
+<script src="/tpl/jquery/jquery-ui-1.11.4/jquery-ui.js"></script>
+<script src="/tpl/bootstrap-3.2.0-dist/js/bootstrap.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/js/rs_websocket.css" />
+<style>
+.se_talk .item {width:50%}
+.se_webrtc .se_talk { display: inline-block; }
+</style>
+
+<script type="text/javascript" src="/js/rs_tools_lib.js"></script>
+<script type="text/javascript" src="cb_view_record.js"></script>
+
+
+</head>
+<body>
+
+<div id="webrtc_dlg">
+	<div class="se_webrtc">
+		<div id="se_rtc_talk" class="se_talk">
+		
+		
+		
+			<div class="bottom_bar">
+				<a href="#" id="bnPlay" class="btn btn-info btn-xs" >
+					<span class="fa-stack fa-lg">
+						<i class="fa fa-play fa-stack-1x"></i>
+					</span>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

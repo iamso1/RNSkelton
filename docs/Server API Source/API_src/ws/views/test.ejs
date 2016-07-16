@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Test </title>
+
+<script>
+var HOST_NUNotice = location.host;
+</script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/rs_tools_lib.js"></script>
+<script type="text/javascript" src="/js/rs_websocket.js"></script>
+<script type="text/javascript" src="/js/test.js"></script>
+
+<style>
+h3{margin-bottom:4px;}
+.title{min-width:65px; display:inline-block;}
+input[type=text]{min-width:400px;}
+</style>
+
+</head>
+<body>
+
+	acn: <input id="user_acn" type="text" value="wheechen"><br>
+	sun: <input id="user_sun" type="text" value="WheeChen"><br>
+	<button id="bnConn">重新連線</button>&nbsp;
+	<button id="bnTextConn">測試連線</button>&nbsp;
+	<hr>
+
+	<h3> Message: </h3>
+	<textarea id="se_ws_msg" type="text" style="width:100%; height:200px;"></textarea>
+	<hr>
+
+	<h3> List: </h3>
+	<select id="se_ws_sel"></select>
+	<hr>
+
+	<h3> /nunotice </h3>
+	<span class="title">url:</span><input id="nunotice_url" type="text" value="http://yahoo.com"><br>
+	<span class="title">url_type:</span><input id="nunotice_url_type" type="text" value="msgs"><br>
+	<span class="title">allow:</span><input id="nunotice_allow" type="text" value="[&quot;wheechen&quot;,&quot;nu12389&quot;,&quot;nu14965&quot;]"><br>
+	<span class="title">title:</span><input id="nunotice_title" type="text" value="&lt;b&gt;WheeChen&lt;/b&gt; 回應了 訊息"><br>
+	<span class="title">content:</span><input id="nunotice_content" type="text" value="測試內容"><br>
+	<form id="nunotice_form" method="POST" action="/nunotice?aa=11&bb=22" target="if_nunotice">
+		data: <textarea id="nunotice_data" type="text" name="data" cols="60" rows="7"></textarea><br>
+	<input type="submit" value="送出">
+	<input id="bnNUNoticeGet" type="button" value="View">
+	</form>
+	<iframe name="if_nunotice" style="width:400px; height:100px;"></iframe>
+	<hr>
+	
+	<h3> Upload File </h3>
+	<form enctype="multipart/form-data" action="/cb_upload_file" method="post">
+		<input type=hidden name="aa" value="1111111">
+		<input type=hidden name="bbb" value="22222222222">
+		<input type=hidden name="cccc" value="3333333333">
+		<input type="file" multiple="multiple" name="file"  />
+		<input type="submit" value="Upload">
+	</form> 	
+
+  </body>
+</html>

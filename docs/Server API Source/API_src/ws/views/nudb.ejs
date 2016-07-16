@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> NUDB </title>
+
+<script>
+var HOST_NUNotice = location.host;
+</script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/rs_tools_lib.js"></script>
+
+<style>
+h3{margin-bottom:4px;}
+.title{min-width:65px; display:inline-block;}
+input[type=text]{min-width:400px;}
+.result{border: solid 1px #795548; padding: 4px 8px; margin-top: 8px;}
+</style>
+<script>
+
+var HOST_IP = "http://"+location.hostname+":5801";
+
+
+$(document).ready( function() {
+
+console.log(navigator);
+console.log(location);
+
+	$("#sys_hostname").html(location.hostname);
+
+
+// RPUT
+$("#rput_form").on("submit", function(){
+	var rec = $("#rput_form #rec").val();
+	var API = HOST_IP+"/rput";
+	var request_data = {}	
+	if (rec.substr(0,1) == "[")
+		request_data['recs'] = rec;
+	else
+		request_data['rec'] = rec;
+var tt = B_getCurrentTime();
+	$.ajax(API, {
+		data: request_data
+		,dataType: 'jsonp'
+		,jsonp: "callback"
+	,	success: function(data, textStatus) {
+		
+console.log("PUT: - url="+API+"?"+B_con_Object2UrlArg(request_data)+", time="+((B_getCurrentTime()-tt)/1000));
+console.log("PUT: - data", data);
+			$("#rput_form #res").html(con_Object2String(data,true));
+		}
+	,	error: function(xhr) {
+console.log("PUT: - url="+API+"?"+B_con_Object2UrlArg(request_data)+", time="+((B_getCurrentTime()-tt)/1000));
+console.log("PUT: - xhr", xhr);
+			var err = "Error: "+xhr.status+", "+xhr.responseText;
+			$("#rput_form #res").html(err);
+		}
+	});
+	return false;
+});
+
+
+// RGET
+$("#rget_form").on("submit", function(){
+	var rid = $("#rget_form #rid").val();
+	var API = HOST_IP+"/rget";
+	var request_data = {	
+		rid: rid
+	}
+var tt = B_getCurrentTime();
+	$.ajax(API, {
+		data: request_data
+		,dataType: 'jsonp'
+		,jsonp: "callback"
+	,	success: function(data, textStatus) {
+		
+console.log("PUT: - url="+API+"?"+B_con_Object2UrlArg(request_data)+", time="+((B_getCurrentTime()-tt)/1000));
+console.log("PUT: - data", data);
+			$("#rget_form #res").html(con_Object2String(data,true));
+		}
+	,	error: function(xhr) {
+console.log("PUT: - url="+API+"?"+B_con_Object2UrlArg(request_data)+", time="+((B_getCurrentTime()-tt)/1000));
+console.log("PUT: - xhr", xhr);
+			var err = "Error: "+xhr.status+", "+xhr.responseText;
+			$("#rget_form #res").html(err);
+		}
+	});
+	return false;
+});
+
+
+// QUERY
+$("#query_form").on("submit", function(){
+	var q = $("#query_form #q").val();
+	var API = HOST_IP+"/query";
+	var request_data = {	
+		q: q
+	}
+console.log("QUERY: - url="+API+"?"+B_con_Object2UrlArg(request_data));
+var tt = B_getCurrentTime();
+	$.ajax(API, {
+		data: request_data
+		,dataType: 'jsonp'
+		,jsonp: "callback"
+	,	success: function(data, textStatus) {
+		
+console.log("QUERY: - url="+API+"?"+B_con_Object2UrlArg(request_data)+", time="+((B_getCurrentTime()-tt)/1000));
+console.log("QUERY: - data", data);
+			$("#query_form #res").html(con_Object2String(data,true));
+		}
+	,	error: function(xhr) {
+console.log("QUERY: - url="+API+"?"+B_con_Object2UrlArg(request_data)+", time="+((B_getCurrentTime()-tt)/1000));
+console.log("QUERY: - xhr", xhr);
+			var err = "Error: "+xhr.status+", "+xhr.responseText;
+			$("#query_form #res").html(err);
+		}
+	});
+	return false;
+});
+
+
+});
+</script>
+
+</head>
+<body>
+
+	hostname: <span id="sys_hostname"></span>
+	<hr>
+
+	<h3> /rput </h3>
+	<form id="rput_form" method="POST" action="http://10.0.0.135:5801/put" target="if_put">
+		暫停時間: <input id="time" type="text" value="0"><br>
+		rec: <textarea id="rec" type="text" name="rec" cols="60" rows="7">
+{
+"url": "http://yahoo.com",
+"uid": "dfgdfghfghfg",
+"upload_time": "20151119000000",
+"time": "",
+"owner": "wheechen",
+"content": "測試中...",
+"atc": "",
+"id": "objectid",
+"numessageId": "objectid"
+}		
+		</textarea><br>
+		<input id="bnSend" type="submit" value="送出">
+		<div id="res" class="result"></div>
+	</form>
+	<!--<iframe name="if_put" style="width:400px; height:100px;"></iframe>-->
+	<hr>
+	
+	<h3> /rget </h3>
+	<form id="rget_form" method="POST" action="#">
+		rid: <input id="rid" type="text" value="347864"><br>
+		<input id="bnSend" type="submit" value="送出">
+		<div id="res" class="result"></div>
+	</form>
+	<hr>
+	
+	
+	<h3> /query </h3>
+	<form id="query_form" method="POST" action="#">
+		q: <input id="q" type="text"><br>
+		<input id="bnSend" type="submit" value="送出">
+		<div id="res" class="result"></div>
+	</form>
+	<hr>
+
+	
+
+  </body>
+</html>

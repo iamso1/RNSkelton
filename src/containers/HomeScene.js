@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TabViewContainer from './TabViewContainer';
 import TabIcon from '../components/TabIcon';
@@ -32,6 +33,15 @@ export default class HomeScene extends React.Component {
     static defaultProps = {
         tabIndex: 0,
     };
+
+    componentWillReceiveProps(nextProps){
+        const { settings } = nextProps;
+        if(_.isEmpty(this.state.csServer) && settings.get('permision')){
+            this.setState({
+                csServer: settings.get('permision').get('csServer')
+            });
+        }
+    }
 
     render() {
         return (
@@ -66,7 +76,7 @@ export default class HomeScene extends React.Component {
                     }} style={styles.card}>
                     <TabViewContainer
                         navKey="chatbox"
-                        initialRouteUrl="/files/"
+                        initialRouteUrl={`/chatroom?csServer=${this.state.csServer}`}
                         navigator={this.props.navigator}
                         ref="tab_2"/>
                 </View>
@@ -113,7 +123,13 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
-  return {};
+    const {
+        settings,
+    } = state;
+
+    return {
+        settings,
+    };
 }
 
 export default connect(mapStateToProps, null, null, { withRef: true })(HomeScene);

@@ -27,6 +27,9 @@ from './viewers';
 import {
     RouteNotifications,
 } from './notifications';
+import {
+    RouteChatroom,
+} from './chatroom';
 
 class AppRouter {
     constructor() {
@@ -45,6 +48,7 @@ class AppRouter {
           RouteFileGroups,
           RouteGridImage,
           RouteGridVideo,
+          RouteChatroom,
         ].forEach(RouteClass => {
           let routeInstance = new RouteClass();
           let crossroadsRoute = crossroads.addRoute(RouteClass.PATTERN);

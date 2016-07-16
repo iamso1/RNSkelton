@@ -3,7 +3,8 @@
  */
  import * as ActionTypes from '../constants/ActionTypes';
 import createReducer from '../utils/createReducer';
-import Immutable from 'immutable';
+
+const Immutable = require('immutable');
 
 const initialState = Immutable.Map();
 

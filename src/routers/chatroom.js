@@ -8,8 +8,8 @@ import {
 } from 'react-native';
 import RouteBase from './base';
 import ChatRoomsScene from '../containers/ChatRoomsScene';
-//import MessageList from '../containers/MessageList';
-/*
+import MessageList from '../containers/MsgListScene';
+
 export class RouteMsgDetail extends RouteBase{
     static PATTERN='/msgDetail/:?query:';
 
@@ -22,7 +22,7 @@ export class RouteMsgDetail extends RouteBase{
                 csServer= { csServer }/>);
     }
 }
-*/
+
 export class RouteChatroom extends RouteBase {
   static PATTERN = '/chatroom/:?query:';
 

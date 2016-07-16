@@ -1,6 +1,7 @@
 package com.ncumailapp;
 
 import com.facebook.react.ReactActivity;
+import com.rnfs.RNFSPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -39,6 +40,7 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RNFSPackage(),
             new ReactVideoPackage(),
             new ImagePickerPackage(),
             new RNDeviceInfo(),

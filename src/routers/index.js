@@ -29,6 +29,7 @@ import {
 } from './notifications';
 import {
     RouteChatroom,
+    RouteMsgDetail,
 } from './chatroom';
 
 class AppRouter {
@@ -49,6 +50,7 @@ class AppRouter {
           RouteGridImage,
           RouteGridVideo,
           RouteChatroom,
+          RouteMsgDetail,
         ].forEach(RouteClass => {
           let routeInstance = new RouteClass();
           let crossroadsRoute = crossroads.addRoute(RouteClass.PATTERN);

@@ -11,11 +11,12 @@ import {
     uploadFile
 } from '../utils/apiWrapper';
 
-export function getRoomDetail(cid: string, page: number = 1, pageSize: number = 9999): Function {
+export function getRoomDetail(cid: string, page: number = 1, pageSize: number = 10): Function {
     return (dispatch, getState) => {
         return WebsocketManager.send('cb_msg_getList', {
                 cid: cid,
                 ps: pageSize,
+                p: page,
             })
             .then((resp) => {
                 dispatch({

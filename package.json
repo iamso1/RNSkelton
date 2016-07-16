@@ -16,6 +16,7 @@
     "react-native-accordion": "^1.0.0",
     "react-native-button": "^1.6.0",
     "react-native-device-info": "^0.9.3",
+    "react-native-fs": "^1.5.1",
     "react-native-image-picker": "^0.20.2",
     "react-native-infinite-scroll-view": "^0.3.4",
     "react-native-item-checkbox": "^1.0.6",

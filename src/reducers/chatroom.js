@@ -14,6 +14,13 @@ export default createReducer(initialState, {
         const roomsData =  Immutable.fromJS(action.rooms);
         return state.set("rooms", roomsData);
     },
+    [ActionTypes.CHATROOM_ADD_NEW_MSG](state, action){
+        return state.update(action.cid, messageData => {
+            return messageData.update('messages', messages => {
+                return messages.concat(Immutable.fromJS([action.newMsg]));
+            });
+        });
+    },
     [ActionTypes.CHATROOM_GET_DETAIL_REQUEST](state, action){
         if(state.get(action.cid)){
             return state.update(action.cid, messageData => {

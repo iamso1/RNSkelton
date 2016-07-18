@@ -21,7 +21,6 @@ export function getRoomDetail(cid: string, lastMsgTime: string, pageSize: number
 
         return WebsocketManager.send('cb_msg_getList', args)
             .then((resp) => {
-                console.log(resp.recs);
                 dispatch({
                     type: ActionTypes.CHATROOM_GET_DETAIL_REQUEST,
                     detail: resp.recs,
@@ -46,17 +45,22 @@ export function getRoomsList(page: number = 1, pageSize: number = 1): Function {
     }
 }
 
-export function sendMessage(msgData: Object): Function {
+export function sendMessage(msgData: Object, cid: string): Function {
     return (dispatch, getState) => {
         return WebsocketManager.send('cb_msg_add', msgData)
             .then(resp => {
-                dispatch({
-                    type: ActionTypes.CHATROOM_REFRESH_DETAIL_REQUEST,
-                    newMsg: resp.rec,
-                });
+                let args = {
+                    cid: cid,
+                    ps: 1,
+                };
+                return WebsocketManager.send('cb_msg_getList', args);
+
             }).then(resp => {
-
-
+                dispatch({
+                    type: ActionTypes.CHATROOM_ADD_NEW_MSG,
+                    newMsg: resp.recs[0],
+                    cid: cid,
+                });
             }).catch(err => console.warn(err));
     }
 }

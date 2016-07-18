@@ -99,14 +99,13 @@ class MessageScene extends React.Component{
     }
 
     sendMessage(data){
-
         if(data.text){
             let msgData = {};
             msgData.content = data.text;
             msgData.cid  = this.props.cid;
             msgData.type = 'chat';
             this.setState({text : ''});
-            this.props.dispatch(sendMessage(msgData));
+            this.props.dispatch(sendMessage(msgData, this.props.cid));
         }
 
     }
@@ -153,11 +152,9 @@ class MessageScene extends React.Component{
     }
 
     nextPage(total: number){
-        console.log(this.state.canLoadMore);
         if(this.state.canLoadMore){
             const messages = this.props.chatroom.get(this.props.cid).get('messages');
             const lastMsg = messages.toArray()[0];
-            console.log(lastMsg.toObject());
             this.props.dispatch(getRoomDetail(this.props.cid, lastMsg.get('time'), this._pageSize));
         }
 

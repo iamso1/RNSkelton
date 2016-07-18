@@ -13,7 +13,6 @@ import {
     RefreshControl,
 } from 'react-native';
 
-import Immutable from 'immutable';
 import S from 'string';
 import InfiniteScrollView from 'react-native-infinite-scroll-view';
 import NavBar from '../components/NavBar';
@@ -23,6 +22,8 @@ import Button from 'react-native-button';
 import { changeRoute } from '../actions/route';
 import { getRoomsList } from '../actions/chatroom';
 import { connect } from 'react-redux';
+
+let Immutable = require('immutable');
 
 class ChatRoomsScene extends React.Component{
     constructor(props){
@@ -116,6 +117,10 @@ class ChatRoomsScene extends React.Component{
 
     loadMore(){
         console.log('loadMore');
+    }
+
+    refresh(){
+
     }
 
     render(){

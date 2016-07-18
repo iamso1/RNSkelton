@@ -96,7 +96,6 @@ export function uploadChatFile(nu_code: string, cid: string, fn: string, fs: num
                 console.warn('Upload File Fail');
             }
         }).then(resp => {
-            console.log(resp.recs);
             dispatch({
                 type: ActionTypes.CHATROOM_ADD_NEW_MSG,
                 newMsg: resp.recs[0],

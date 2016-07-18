@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
+import { permisions } from '../utils/buildVar';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TabViewContainer from './TabViewContainer';
@@ -44,65 +45,38 @@ export default class HomeScene extends React.Component {
     }
 
     render() {
-        return (
-          <View style={styles.container}>
-            <ScrollableTabView
-                initialPage={0}
-                tabBarPosition='bottom'
-                renderTabBar= {() => <TabIcon />}>
-                <View tabLabel={{
-                        icon: 'files-o',
-                        name: '我的檔案'
-                    }} style={styles.card}>
-                    <TabViewContainer
-                        navKey="files"
-                        initialRouteUrl="/files/"
-                        navigator={this.props.navigator}
-                        ref="tab_0"/>
-                </View>
-                <View tabLabel={{
-                        icon: 'th-list',
-                        name: '檔案列表',
-                    }} style={styles.card}>
-                    <TabViewContainer
-                        navKey="group"
-                        initialRouteUrl="/fileGroups/"
-                        navigator={this.props.navigator}
-                        ref="tab_1"/>
-                </View>
-                <View tabLabel={{
-                        icon: 'comments-o',
-                        name: '聊天室',
-                    }} style={styles.card}>
-                    <TabViewContainer
-                        navKey="chatbox"
-                        initialRouteUrl={`/chatroom?csServer=${this.state.csServer}`}
-                        navigator={this.props.navigator}
-                        ref="tab_2"/>
-                </View>
-                <View tabLabel={{
-                        icon: 'bell-o',
-                        name: '通知',
-                    }} style={styles.card}>
-                    <TabViewContainer
-                        navKey="notifications"
-                        initialRouteUrl="/notifications/"
-                        navigator={this.props.navigator}
-                        ref="tab_3"/>
-                </View>
-                <View tabLabel={{
-                        icon: 'feed',
-                        name: '動態',
-                    }} style={styles.card}>
-                    <TabViewContainer
-                        navKey="feed"
-                        initialRouteUrl="/files/"
-                        navigator={this.props.navigator}
-                        ref="tab_4"/>
-                </View>
-            </ScrollableTabView>
-          </View>
-        );
+        const { settings } = this.props;
+        if(_.isUndefined(settings.get('permision'))){
+            return <View />;
+        }else{
+            const self = this;
+            return (
+              <View style={styles.container}>
+                <ScrollableTabView
+                    initialPage={0}
+                    tabBarPosition='bottom'
+                    renderTabBar= {() => <TabIcon />}>
+                    {permisions.map(permision => {
+                        return(
+                            <View key={permision.ref}
+                                tabLabel={{
+                                    icon: permision.icon,
+                                    name: permision.name
+                                }} style={styles.card}>
+                                <TabViewContainer
+                                    navKey={permision.navKey}
+                                    initialRouteUrl={`${permision.initialRouteUrl}?csServer=${self.state.csServer}`}
+                                    navigator={self.props.navigator}
+                                    ref={permision.ref}/>
+                            </View>
+                        );
+                    })}
+                </ScrollableTabView>
+              </View>
+            );
+        }
+
+
     }
 }
 

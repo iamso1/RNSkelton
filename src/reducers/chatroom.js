@@ -18,7 +18,8 @@ export default createReducer(initialState, {
         if(state.get(action.cid)){
             return state.update(action.cid, messageData => {
                 let newData = messageData.update('messages', messages => {
-                    return messages.unshift(Immutable.fromJS(sortMessages(action.detail)));
+                    let newmsgs = Immutable.fromJS(sortMessages(action.detail));
+                    return newmsgs.concat(messages);
                 });
                 return newData.set('hasNextPaging', action.hasNextPaging);
             });

@@ -153,6 +153,7 @@ class MessageScene extends React.Component{
     }
 
     nextPage(total: number){
+        console.log(this.state.canLoadMore);
         if(this.state.canLoadMore){
             const messages = this.props.chatroom.get(this.props.cid).get('messages');
             const lastMsg = messages.toArray()[0];

@@ -30,7 +30,7 @@ import {
     replaceRoute
 } from '../actions/route';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default class SettingsScene extends React.Component {
     constructor(props) {
@@ -138,7 +138,7 @@ export default class SettingsScene extends React.Component {
                   navigator={this.props.navigator}
                   title="設定"
                 />
-            <View style={styles.container}>
+                <ScrollView style={styles.container}>
 
                     {this.renderPermisionSetting(settings.get('permision'))}
 
@@ -153,7 +153,7 @@ export default class SettingsScene extends React.Component {
                           <Text style={styles.itemName}>登出</Text>
                         </View>
                     </TouchableWithoutFeedback>
-                </View>
+                </ScrollView>
             </View>
         );
     }
@@ -161,7 +161,7 @@ export default class SettingsScene extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        marginBottom: 40,
+        height: height-120,
     },
     item: {
         marginLeft: 10,

@@ -23,13 +23,7 @@ export function uploadFile(data): Promise{
       };
 
     return fetch(uri.toString(), options)
-    .then(resp => resp.text())
-    .then(resp => {
-        if(resp === 'ok') {
-
-        }
-    })
-    .catch(error => console.warn(error));
+    .then(resp => resp.text());
 }
 
 export function request(endpoint: string, method: string, data: Object = {}, sessionToken: ?string = null, urlBase: string = API_URL_BASE) {

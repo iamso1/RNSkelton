@@ -67,7 +67,6 @@ export function sendMessage(msgData: Object, cid: string): Function {
 
 export function uploadChatFile(nu_code: string, cid: string, fn: string, fs: number, path: string): Function {
     return (dispatch, getState) => {
-
         const fid = randomString(10);
 
         let args = {
@@ -85,6 +84,24 @@ export function uploadChatFile(nu_code: string, cid: string, fn: string, fs: num
         });
         form.append('data', JSON.stringify(args));
 
-        return uploadFile(form);
+        return uploadFile(form)
+        .then(resp => {
+            if(resp === 'ok'){
+                let args = {
+                    cid: cid,
+                    ps: 1,
+                };
+                return WebsocketManager.send('cb_msg_getList', args);
+            }else{
+                console.warn('Upload File Fail');
+            }
+        }).then(resp => {
+            console.log(resp.recs);
+            dispatch({
+                type: ActionTypes.CHATROOM_ADD_NEW_MSG,
+                newMsg: resp.recs[0],
+                cid: cid,
+            });
+        }).catch(error => console.warn(error));
     }
 }

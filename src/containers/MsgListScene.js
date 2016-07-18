@@ -24,8 +24,7 @@ import SessionManager from '../utils/sessionManager';
 import TextInput from '../components/TextInput';
 
 import { getWSImage, getWSFile, getWSServer, getWSVideo } from '../utils/websocketManager';
-import { uploadChatFile } from '../actions/chatroom';
-import { getRoomDetail, sendMessage } from '../actions/chatroom';
+import { getRoomDetail, sendMessage, uploadChatFile } from '../actions/chatroom';
 import {changeRoute} from '../actions/route';
 import { connect } from 'react-redux';
 import { ImagePickerManager } from 'NativeModules';
@@ -115,6 +114,7 @@ class MessageScene extends React.Component{
         } else if (resp.error) {
           console.warn('ImagePickerManager error - ' + resp.error);
         } else {
+            const { cid } = this.props;
             RNFS.stat(resp.uri.replace('file://', ''))
             .then(statResult => {
                 const fileUri = resp.uri.replace('file://', '');
@@ -122,7 +122,7 @@ class MessageScene extends React.Component{
                 const WSServer = getWSServer();
                 const { cid, csServer } = this.props;
                 const nu_code = SessionManager.sessionToken;
-                this.props.dispatch(uploadChatFile(nu_code, cid, fileName, statResult.size, fileUri));
+                this.props.dispatch(uploadChatFile(nu_code, cid, fileName, statResult.size, fileUri, cid));
             }).catch(error => console.warn(error));
 
         }

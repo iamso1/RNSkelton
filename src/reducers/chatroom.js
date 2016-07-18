@@ -15,9 +15,23 @@ export default createReducer(initialState, {
         return state.set("rooms", roomsData);
     },
     [ActionTypes.CHATROOM_GET_DETAIL_REQUEST](state, action){
-        let sortData = sortMessages(action.detail);
-        const messages = Immutable.fromJS(sortData);
-        return state.set("detail", messages);
+        if(state.get(action.cid)){
+            return state.update(action.cid, messageData => {
+                let newData = messageData.update('messages', messages => {
+                    return messages.unshift(Immutable.fromJS(sortMessages(action.detail)));
+                });
+                return newData.set('hasNextPaging', action.hasNextPaging);
+            });
+        }else{
+            let sortData = sortMessages(action.detail);
+            const messages = {
+                messages: sortData,
+                hasNextPaging: action.hasNextPaging,
+            }
+
+            return state.set(action.cid, Immutable.fromJS(messages));
+        }
+
     },
     [ActionTypes.CHATROOM_REFRESH_DETAIL_REQUEST](state, action){
         const newState = state.update('detail', detail => {

@@ -47,7 +47,9 @@ class MessageScene extends React.Component{
         this.renderMessageEntityView = this.renderMessageEntityView.bind(this);
         this.renderNavRightButtons = this.renderNavRightButtons.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
+        this.nextPage = this.nextPage.bind(this);
 
+        this._pageSize = 10;
         let dataSource = new ListView.DataSource({
           rowHasChanged: (r1, r2) => !Immutable.is(r1, r2),
           getRowData: (dataBlob, sectionID, rowID) => { return dataBlob[sectionID].get(rowID); }
@@ -61,12 +63,13 @@ class MessageScene extends React.Component{
             isRefreshing: false,
             contentSize: 0,
             layoutSize: 0,
+            total: 0,
         };
     }
 
     componentDidMount(){
         InteractionManager.runAfterInteractions(() => {
-            this.props.dispatch(getRoomDetail(this.props.cid), 1, 10);
+            this.props.dispatch(getRoomDetail(this.props.cid, null, this._pageSize));
             const scrollHeight = this.state.layoutSize -  this.state.contentSize;
             const animated = true;
             this.refs.msgList.scrollTo({
@@ -78,17 +81,20 @@ class MessageScene extends React.Component{
     }
 
     componentWillReceiveProps(nextProps) {
-        const { chatroom } = nextProps;
+        const { chatroom, cid } = nextProps;
         const acn = SessionManager.acn;
         const sun = SessionManager.sun;
 
-        let detailData = chatroom.get('detail'),
-            messageCount = detailData.size;
+        let detailData = chatroom.get(cid),
+            messages = detailData.get('messages'),
+            messageCount = messages.size,
+            canLoadMore = detailData.get('hasNextPaging');
         let rowIds = (count => [...Array(count)].map((val, i) => i))(messageCount);
         this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(detailData, rowIds),
-            canLoadMore: false,
+            dataSource: this.state.dataSource.cloneWithRows(messages, rowIds),
+            canLoadMore: canLoadMore,
             isRefreshing: false,
+            total: messageCount,
         });
     }
 
@@ -146,6 +152,16 @@ class MessageScene extends React.Component{
             name='plus' />;
     }
 
+    nextPage(total: number){
+        if(this.state.canLoadMore){
+            const messages = this.props.chatroom.get(this.props.cid).get('messages');
+            const lastMsg = messages.toArray()[0];
+            console.log(lastMsg.toObject());
+            this.props.dispatch(getRoomDetail(this.props.cid, lastMsg.get('time'), this._pageSize));
+        }
+
+    }
+
     render(){
         const acn = SessionManager.acn;
 
@@ -156,38 +172,47 @@ class MessageScene extends React.Component{
                   title={this.props.name}
                   renderRightButtonsComponent={this.renderNavRightButtons}
                 />
-            <ListView
-                ref='msgList'
-                onLayout={ev => this.setState({ layoutSize: ev.nativeEvent.layout.height })}
-                onContentSizeChange={(w, h) => this.refs.msgList.scrollTo({x : 0, y : (h - this.state.layoutSize), animated:false})}
-                enableEmptySections={true}
-                style={styles.listView}
-                onLoadMoreAsync={this.loadMore}
-                canLoadMore={this.state.canLoadMore}
-                dataSource={this.state.dataSource}
-                pageSize={30}
-                renderRow={this.renderMessageEntityView}/>
+            {
+                (this.state.canLoadMore)
+                ? <Text
+                    onPress={() => this.nextPage(this.state.total)}
+                    style={styles.loadMore}>Load More...</Text>
+                : <Text></Text>
+            }
 
-            <View style={styles.textInputRow}>
-                <View style={{flex: 12}}>
-                    <TextInput
-                        style={styles.textInput}
-                        autoFocus={false}
-                        onChangeText={text => this.setState({ text: text })}
-                        value={this.state.text}
-                        placeholder="Enter Message..."
-                        autoCapitalize="none"/>
-                </View>
-                <View style={{flex: 1, alignItems: 'center'}}>
-                    <Icon.Button
-                        onPress = {() => this.sendMessage(this.state)}
-                        name='send-o'
-                        color='#000000'
-                        backgroundColor='#a9a9a9'>
-                    </Icon.Button>
+                <ListView
+                    ref='msgList'
+                    onLayout={ev => this.setState({ layoutSize: ev.nativeEvent.layout.height })}
+                    onContentSizeChange={(w, h) => this.refs.msgList.scrollTo({x : 0, y : (h - this.state.layoutSize), animated:false})}
+                    enableEmptySections={true}
+                    style={styles.listView}
+                    onLoadMoreAsync={this.loadMore}
+                    canLoadMore={this.state.canLoadMore}
+                    dataSource={this.state.dataSource}
+                    pageSize={30}
+                    renderRow={this.renderMessageEntityView}/>
+
+
+                <View style={styles.textInputRow}>
+                    <View style={{flex: 12}}>
+                        <TextInput
+                            style={styles.textInput}
+                            autoFocus={false}
+                            onChangeText={text => this.setState({ text: text })}
+                            value={this.state.text}
+                            placeholder="Enter Message..."
+                            autoCapitalize="none"/>
+                    </View>
+                    <View style={{flex: 1, alignItems: 'center'}}>
+                        <Icon.Button
+                            onPress = {() => this.sendMessage(this.state)}
+                            name='send-o'
+                            color='#000000'
+                            backgroundColor='#a9a9a9'>
+                        </Icon.Button>
+                    </View>
                 </View>
             </View>
-        </View>
         );
     }
 
@@ -201,7 +226,7 @@ class MessageScene extends React.Component{
         this.handleSelectMedia('audio', name, '', url);
     }
 
-    handleSelectMedia(type: String, name: String, csServer: String, url: String, q: String = '') {
+    handleSelectMedia(type: string, name: string, csServer: string, url: string, q: string) {
         return Promise.resolve(csServer)
         .then(csServer => {
             this.props.dispatch(changeRoute(`/viewers/media?path=${url}&csServer=${csServer}&name=${name}&q=${q}`,
@@ -343,13 +368,13 @@ class MessageScene extends React.Component{
                     </View>
                     {file}
                 </View>
-
                 <View style={{ flex: 1 }}/>
             </View>
 
             );
         }
     renderMessageEntityView(message){
+
         const m = message.toObject();
         const acn = SessionManager.acn;
 
@@ -463,11 +488,16 @@ let styles = StyleSheet.create({
   },
   textInput: {
     height: 20,
-    marginBottom: 70,
+    marginBottom: 20,
     borderRadius: 10,
     borderTopWidth: 2,
     marginLeft: 10,
   },
+  loadMore: {
+      textAlign: 'center',
+      fontSize: 18,
+      color: 'rgba(0, 0, 0, 0.5)',
+  }
 });
 
 function mapStateToProps(state) {

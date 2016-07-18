@@ -11,18 +11,22 @@ import {
     uploadFile
 } from '../utils/apiWrapper';
 
-export function getRoomDetail(cid: string, page: number = 1, pageSize: number = 10): Function {
+export function getRoomDetail(cid: string, lastMsgTime: string, pageSize: number = 10): Function {
     return (dispatch, getState) => {
-        return WebsocketManager.send('cb_msg_getList', {
-                cid: cid,
-                ps: pageSize,
-                p: page,
-            })
+        let args = {
+            cid: cid,
+            ps: pageSize,
+        };
+        if(lastMsgTime) args.lt = lastMsgTime;
+
+        return WebsocketManager.send('cb_msg_getList', args)
             .then((resp) => {
+                console.log(resp.recs);
                 dispatch({
                     type: ActionTypes.CHATROOM_GET_DETAIL_REQUEST,
                     detail: resp.recs,
-                    canLoadMore: resp.recs < pageSize
+                    hasNextPaging: resp.recs.length >= pageSize,
+                    cid: cid,
                 });
                 return resp.recs;
             }).catch(err => console.error(err));
@@ -32,7 +36,6 @@ export function getRoomDetail(cid: string, page: number = 1, pageSize: number = 
 export function getRoomsList(page: number = 1, pageSize: number = 1): Function {
     return (dispatch, getState) => {
         return WebsocketManager.send("cb_getList").then((resp) => {
-            console.log(resp.recs);
             dispatch({
                 type: ActionTypes.CHATROOM_GET_LIST_REQUEST,
                 rooms: resp.recs,

@@ -49,7 +49,7 @@ export default class VideoPreview extends React.Component{
     }
 
     render(){
-        console.log(this.props);
+
         const videoLogo = Object.assign({}, styles.videLogo, this.props.videoLogo);
         const videoIcon = Object.assign({}, styles.videoIcon, this.props.videoIcon);
 

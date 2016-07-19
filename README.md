@@ -177,6 +177,81 @@ http://bach.ccu.edu.tw/tools/api_tools.php?mode=search&file_path=nu23185%2FDrive
     "debug_msg": "POWER_Manager=, USER_ACN=nu23185, Admin=1, Show=1, Download=1, Upload=1, Edit=1, Del=1"
 }
 
+## 取回動態列表
+
+    route: /tools/api_user_info.php
+
+    method: GET
+
+### Input
+
+| 欄位名稱 | 欄位類別 | 備註 |
+| -------- | ------ | ------ |
+| mode | get_global_dynamic2 | None|
+| ps | Number | 每頁回傳幾筆 |
+| ao | String | 指定哪個朋友的訊息 |
+| as | String | 指定網站的訊息 |
+| ts | String |  從哪個時間開始取回訊息 |
+| au | String | 查某個目錄底下的所有訊息 (page_url) |
+| kw | String | 關鍵字查詢 |
+| id | String | 取某一筆 |
+
+### Output
+
+| 欄位名稱 | 欄位類別 | 備註 |
+| -------- | ------ | ------ |
+| time | Number | TimeStamp |
+| user | String | uid |
+| user_mail | String | email |
+| user_sun | String | nickname |
+| recs | Array | Post List |
+
+recs[0]
+
+| 欄位名稱 | 欄位類別 | 備註 |
+| -------- | ------ | ------ |
+| cnt | Number | 1 |
+| t_first | Number | 建立時間 |
+| t_last | Number | 最後修改時間 |
+| u_fp | String | Server URL |
+| v_fp | String | Nickname |
+| files | Array | 附件列表 |
+
+files[0]
+
+| 欄位名稱 | 欄位類別 | 備註 |
+| -------- | ------ | ------ |
+| allow | String | None |
+| atn | String | 檔案資料字串 |
+| author | String | 發布者 |
+| cnt_like | String | 讚數 |
+| cnt_view | String | 瀏覽數 |
+| description | String | Content |
+| filename | String | 檔案名稱 |
+| mtime | String | 最後修改時間 |
+| page_name | String | 頁面url prefix |
+| site_id | String | 網頁ID |
+| tag | String | Tag |
+| type | String | 留言類型 [BBS, Html, Site]|
+| view_path | String | 網頁prefix |
+
+## Example
+
+    取最新訊息：
+    ?mode=get_global_dynamic2&act=&ps=20&as=all
+
+    取最新訊息下一頁：
+    ?mode=get_global_dynamic2&act=&pt=1464624449&ps=20&as=all
+
+    取某個網站或社群的最新訊息：
+    ?mode=get_global_dynamic2&act=&ps=20&as=whee-g7-28.ookon_test001
+
+    取某個網站或社群的最新訊息下一頁：
+    ?mode=get_global_dynamic2&act=&pt=1462860482&ps=20&as=whee-g7-28.ookon_test001
+
+    取兩位朋友所發的訊息：
+    ?mode=get_global_dynamic2&act=&ps=20&as=all&ao=nu12389,wheechen
+
 ## 取回留言的Comments
 
     route: /Site/{cid}/.nuweb_forum/index.php

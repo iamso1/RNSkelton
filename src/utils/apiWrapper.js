@@ -239,6 +239,10 @@ export function getOrCreateDirectory(csServer: string, path: string, name: strin
         .catch(error => Promise.reject(error));
 }
 
+export function getThumbLogo(csServer: string, uid: string){
+    return `${csServer}/UserProfile/user_image.php?acn=${uid}`;
+}
+
 export function getThumbImage(csServer: string, url: string, type: string) {
     return `${csServer}/tools/api_get_thumbs.php?page_url=${url}&type=${type}`;
 }

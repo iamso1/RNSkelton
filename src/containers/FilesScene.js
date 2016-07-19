@@ -106,7 +106,6 @@ class FilesScene extends React.Component {
 
         let pathFiles = files.get(this._filesKey);
 
-console.log(this.state.path);
         if (pathFiles != null && this.props.files.get(this._filesKey) !== pathFiles) {
           let fileCount = pathFiles.get('files').size;
           let canLoadMore = pathFiles.get('hasNextPaging');

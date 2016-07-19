@@ -11,12 +11,21 @@ import {
    Dimensions,
    StyleSheet,
  } from 'react-native';
-import {connect} from 'react-redux';
+import {
+    connect
+} from 'react-redux';
+import {
+    TimeFormat
+} from '../utils/TimeHandler';
+import {
+    getThumbLogo,
+} from '../utils/apiWrapper';
 import {
     getPostList
 } from '../actions/posts';
 
 import InfiniteScrollView from 'react-native-infinite-scroll-view';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import NavBar from '../components/NavBar';
 import moment from 'moment';
 import _ from 'lodash';
@@ -60,7 +69,7 @@ class PostListScene extends React.Component{
 
     componentWillReceiveProps(nextProps) {
           const { posts, path } = nextProps;
-          console.log(posts.toObject());
+
           let postsData = posts.get(path);
           let postsContent = postsData.get('content');
           const postCount = postsContent.size;
@@ -93,19 +102,69 @@ class PostListScene extends React.Component{
 
     renderPostEntityView(post){
         let comments = [];
-        console.log(post.toObject());
+
         const mtime = moment(post.get('mtime')).format('YYYY-MM-DD A hh:mm:ss');
         const Audio = post.get('Audio');
         const type = post.get('type');
         const Server = post.get('u_fp');
         const uid = post.get('uid');
-        const p_id = post.get('id');
+        const logo = getThumbLogo(this.props.csServer, post.get('uid'));
 
         if(!_.isUndefined(post.get('comments'))) comments = post.get('comments').toArray();
 
         return(
-            <View style={styles.postContainer}>
-                <Text>post11111111111</Text>
+            <View style={styles.postContainer} key={post.get('id')}>
+                <View style={styles.postHeader}>
+                    <View style={{flex: 1}}>
+                        <Image
+                            style={styles.userLogo}
+                            source={{uri: logo}}/>
+
+                    </View>
+                    <View style={{flex: 8, marginTop: 5,}}>
+                        <Text style={styles.postBodyText}>{post.get('v_fp')}</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.postDateText}>{TimeFormat(post.get('t_last'))}</Text>
+                    </View>
+                </View>
+
+                <View style={styles.postBody}>
+                    <Text style={styles.postBodyText}>{post.get('description')}</Text>
+                </View>
+                <View style={styles.postFooter}>
+                    <View style={styles.postFooterBlock}>
+                        <Icon.Button
+                            style={styles.postFooterText}
+                            name="thumbs-o-up"
+                            backgroundColor="#FFFFFF"
+                            color="#0000ff"
+                            size={18}>
+                            讚
+                        </Icon.Button>
+                    </View>
+                    <View style={styles.postFooterBlock}>
+                        <Icon.Button
+                            style={styles.postFooterText}
+                            name="share-square-o"
+                            backgroundColor="#FFFFFF"
+                            color="#0000ff"
+                            size={18}>
+                            分享
+                        </Icon.Button>
+                    </View>
+                    <View style={styles.postFooterBlock}>
+
+                            <Icon.Button
+                                style={styles.postFooterText}
+                                name="angle-double-right"
+                                backgroundColor="#FFFFFF"
+                                color="#0000ff"
+                                size={18}>
+                                詳情
+                            </Icon.Button>
+                    </View>
+                </View>
             </View>
         );
     }
@@ -145,6 +204,51 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  userLogo: {
+      height: 40,
+      width: 40,
+      marginLeft: 5,
+      borderRadius: 20,
+  },
+  postHeader: {
+      flexDirection: 'row',
+      marginRight: 10,
+      marginLeft: 10,
+  },
+  postContainer: {
+      paddingTop: 10,
+      marginTop: 10,
+      marginLeft: 15,
+      borderBottomWidth: 1,
+      borderColor: '#CCCCCC',
+  },
+  postBody: {
+      paddingLeft: 25,
+      paddingTop: 10,
+      marginBottom: 10,
+  },
+  postBodyText: {
+      fontSize: 18,
+      color: '#000000',
+  },
+  postDateText: {
+      fontSize: 12,
+      color: '#CCCCCC'
+  },
+  postFooter: {
+      flexDirection: 'row',
+      paddingTop: 5,
+      paddingBottom: 5,
+      borderTopWidth: 1,
+      borderColor: '#CCCCCC',
+  },
+  postFooterBlock: {
+      flex: 1,
+  },
+    postFooterText: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
 
 function mapStateToProps(state) {

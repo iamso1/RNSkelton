@@ -119,7 +119,6 @@ export function getPostList(csServer: string, path: string, act: string = '', as
         return Promise.resolve(csServer)
             .then(_csServer => _csServer || getMyCsServer())
             .then(_csServer => {
-                console.log(4);
                 queryCsServer = _csServer;
                 return request('/tools/api_user_info.php', 'GET', params, SessionManager.sessionToken, queryCsServer);
             }).then(resp => resp.json())
@@ -136,7 +135,7 @@ export function getPostList(csServer: string, path: string, act: string = '', as
                     let data = _.pick(msg, 'cnt', 't_first', 't_last', 'type', 'u_fp', 'v_fp');
 
                     msg.files.map((file) => {
-                        console.log(file);
+                        
                         data.id = file.id;
                         if (!data.url) data.url = file.url;
                         data.uid = file.owner;

@@ -11,6 +11,7 @@ import viewerMedia from './viewerMedia';
 import viewerWeb from './viewerWeb';
 import notifications from './notifications';
 import chatroom from './chatroom';
+import posts from './posts';
 
 const rootReducer = combineReducers({
     route,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
     viewerMedia,
     viewerWeb,
     chatroom,
+    posts,
 });
 
 export default rootReducer;

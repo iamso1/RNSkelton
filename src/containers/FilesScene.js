@@ -25,7 +25,7 @@ import Menu, {
     MenuOption,
     MenuTrigger
 } from 'react-native-menu';
-
+import _ from 'lodash';
 import InfiniteScrollView from 'react-native-infinite-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -71,6 +71,7 @@ class FilesScene extends React.Component {
 
         this.closeCreateDirDialog = this.closeCreateDirDialog.bind(this);
         this.renderCreateDirDialog = this.renderCreateDirDialog.bind(this);
+        this.renderNavRightButtons = this.renderNavRightButtons.bind(this);
 
         this.renderNavRightButtons = this.renderNavRightButtons.bind(this);
 
@@ -105,6 +106,7 @@ class FilesScene extends React.Component {
 
         let pathFiles = files.get(this._filesKey);
 
+console.log(this.state.path);
         if (pathFiles != null && this.props.files.get(this._filesKey) !== pathFiles) {
           let fileCount = pathFiles.get('files').size;
           let canLoadMore = pathFiles.get('hasNextPaging');
@@ -228,33 +230,35 @@ class FilesScene extends React.Component {
     }
 
     renderNavRightButtons() {
-      return (
-        <View>
-          <Menu onSelect={this.handleMenuSelect}>
-            <MenuTrigger>
-              <Icon
-                name="ellipsis-h"
-                size={20}
-                color="#ffffff"
-              />
-            </MenuTrigger>
-            <MenuOptions>
-              <MenuOption value="createDir">
-                <Text>新增資料夾</Text>
-              </MenuOption>
-              <MenuOption value="uploadFile">
-                <Text>上傳相片</Text>
-              </MenuOption>
-              <MenuOption value="uploadVideo">
-                <Text>上傳影片</Text>
-              </MenuOption>
-              <MenuOption value="setting">
-                <Text>個人設定</Text>
-              </MenuOption>
-            </MenuOptions>
-          </Menu>
-        </View>
-      );
+        if(_.isNull(this.state.path)) return <View />;
+
+        return (
+            <View>
+              <Menu onSelect={this.handleMenuSelect}>
+                <MenuTrigger>
+                  <Icon
+                    name="ellipsis-h"
+                    size={20}
+                    color="#ffffff"
+                  />
+                </MenuTrigger>
+                <MenuOptions>
+                  <MenuOption value="createDir">
+                    <Text>新增資料夾</Text>
+                  </MenuOption>
+                  <MenuOption value="uploadFile">
+                    <Text>上傳相片</Text>
+                  </MenuOption>
+                  <MenuOption value="uploadVideo">
+                    <Text>上傳影片</Text>
+                  </MenuOption>
+                  <MenuOption value="setting">
+                    <Text>個人設定</Text>
+                  </MenuOption>
+                </MenuOptions>
+              </Menu>
+            </View>
+        );
     }
 
     uploadFile() {
@@ -277,6 +281,7 @@ class FilesScene extends React.Component {
           this.setState({ isRefreshing: true });
           const fileUri = resp.uri;
           const fileName = fileUri.split('/').pop();
+          console.log(this.state);
           uploadImage(this.state.csServer, this.state.path, fileUri, fileName)
             .then(() => {
               this.refresh();

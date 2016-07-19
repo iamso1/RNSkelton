@@ -132,7 +132,6 @@ class WebsocketManager {
 
   _onMessage(e) {
     const data = JSON.parse(e.data);
-    // console.log('onMessage', data);
     const {
       mode,
       result

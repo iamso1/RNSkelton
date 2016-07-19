@@ -156,7 +156,6 @@ export default class ImageCarousell extends React.Component {
   }
 
   render() {
-    console.log('imagegrid');
     return (
       <View style={[styles.container, this.props.style]}>
         <StatusBar hidden={true} animated={false} />

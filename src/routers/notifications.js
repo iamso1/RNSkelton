@@ -9,10 +9,11 @@ export class RouteNotifications extends RouteBase {
   static PATTERN = '/notifications/:?query:';
 
     renderScene(navigator: Object, query: Object): Function {
-        console.log(query);
+
         return (
             <NotificationsScene
                 navigator={navigator} />
         );
+        
     }
 }

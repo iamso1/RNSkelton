@@ -11,7 +11,7 @@ import RNButton from 'react-native-button';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 export default class Button extends React.Component {
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
@@ -59,7 +59,7 @@ export default class Button extends React.Component {
   }
 }
 
-let styles = StyleSheet.create({
+export let styles = StyleSheet.create({
   button: {
     marginTop: 20,
     marginBottom: 20,

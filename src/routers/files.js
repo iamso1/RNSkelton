@@ -39,8 +39,7 @@ export class RouteFileGroups extends RouteBase {
 export class RouteGridImage extends RouteBase {
   static PATTERN = '/grids/image:?query:';
 
-  renderScene(navigator, query) {
-      console.log(query);
+  renderScene(navigator: Object, query: Object) {
     return (
       <GridImageScene
         navigator={navigator} />

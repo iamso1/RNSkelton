@@ -48,7 +48,6 @@ export default class FileIcon extends React.Component{
     }
 
     render(){
-        console.log(this.props.btnStyle);
         const btnStyle = Object.assign({}, styles.btn, this.props.btnStyle);
         const textStyle = Object.assign({}, styles.textStyle, this.props.textStyle);
 

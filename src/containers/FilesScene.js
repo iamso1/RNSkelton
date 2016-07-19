@@ -151,7 +151,6 @@ class FilesScene extends React.Component {
     }
 
     handleSelectHtml(name: string, csServer: string, url: string) {
-        console.log(name, csServer, url);
         this.props.dispatch(changeRoute(`/viewers/web?name=${name}&type=html&csServer=${csServer}&url=${url}`,
                                       this.props.navigator.props.navKey));
     }

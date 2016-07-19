@@ -57,6 +57,8 @@ export default class HomeScene extends React.Component {
                     tabBarPosition='bottom'
                     renderTabBar= {() => <TabIcon />}>
                     {permisions.map(permision => {
+                        const { name } = permision;
+
                         return(
                             <View key={permision.ref}
                                 tabLabel={{
@@ -65,7 +67,7 @@ export default class HomeScene extends React.Component {
                                 }} style={styles.card}>
                                 <TabViewContainer
                                     navKey={permision.navKey}
-                                    initialRouteUrl={`${permision.initialRouteUrl}?csServer=${self.state.csServer}`}
+                                    initialRouteUrl={`${permision.initialRouteUrl}?csServer=${self.state.csServer}&name=${name}`}
                                     navigator={self.props.navigator}
                                     ref={permision.ref}/>
                             </View>

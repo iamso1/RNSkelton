@@ -31,6 +31,10 @@ import {
     RouteChatroom,
     RouteMsgDetail,
 } from './chatroom';
+import {
+    RoutePostList,
+    RoutePostDetail,
+} from './feeds';
 
 class AppRouter {
     constructor() {
@@ -51,6 +55,8 @@ class AppRouter {
           RouteGridVideo,
           RouteChatroom,
           RouteMsgDetail,
+          RoutePostList,
+          RoutePostDetail,
         ].forEach(RouteClass => {
           let routeInstance = new RouteClass();
           let crossroadsRoute = crossroads.addRoute(RouteClass.PATTERN);

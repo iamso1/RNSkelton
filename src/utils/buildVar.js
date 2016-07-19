@@ -37,9 +37,9 @@ export const permisions = [
     },{
         key: 'table',
         icon: 'feed',
-        name: '通知',
+        name: '動態',
         navKey: 'feed',
-        initialRouteUrl: '/feed/',
+        initialRouteUrl: '/postList/',
         ref: 'tab_4'
     },{
         key: 'numail',

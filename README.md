@@ -252,6 +252,55 @@ files[0]
     取兩位朋友所發的訊息：
     ?mode=get_global_dynamic2&act=&ps=20&as=all&ao=nu12389,wheechen
 
+## 文章按讚
+
+    route : /tools/api_tools.php
+
+    method : GET
+
+### Input
+
+| 欄位名稱 | 欄位類別 | 備註 |
+| -------- | ------ | ------ |
+| mode | String | default: file |
+| act | String | default: GetComment |
+| file_path | String | 檔案路徑 |
+| like | String | enum: [y(讚) / n(取消讚)] |
+
+### Output
+
+| 欄位名稱 | 欄位類別 | 備註 |
+| -------- | ------ | ------ |
+| cnt_like | Number | 總讚數 |
+| bMyLike | String | 自己是否按讚 |
+| us_like | Array | 按讚名單 |
+
+## 動態按讚
+
+    route: /Site/[site acn]/.nuweb_forum
+
+    method: GET
+
+### Input
+
+| 欄位名稱 | 欄位類別 | 備註 |
+| -------- | ------ | ------ |
+| mode | String | enums:  [like(讚) / unlike(不喜歡)] |
+| path | String | 版ID |
+| f | String | 文章ID |
+| like | String | enums: [y(讚) / n(回收)] |
+| unlike | String | enums: [y(不喜歡) / n(回收)] |
+
+### Output
+
+| 欄位名稱 | 欄位類別 | 備註 |
+| -------- | ------ | ------ |
+| cnt_like | Number | 總讚數 |
+| cnt_unlike | Number | 不喜歡總數 |
+| bMyLike | Boolean | 自己是否有按讚 |
+| us_like | Array | 按讚的名單 |
+| us_unlike | Array | 不喜歡的名單 |
+
 ## 取回留言的Comments
 
     route: /Site/{cid}/.nuweb_forum/index.php

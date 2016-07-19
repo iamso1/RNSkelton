@@ -13,6 +13,7 @@ import SessionManager from '../utils/sessionManager';
 export function getUid() {
     return SessionManager.acn;
 }
+
 export function uploadFile(data): Promise {
     let uri = new URI(WS_API_HOST + '/cb_upload_file');
 
@@ -138,7 +139,6 @@ export function composeThumbUrl(csServer: string, url: string, type: string, siz
     return `${csServer}/tools/api_get_thumbs.php?${qs}`;
 }
 
-
 export function composeVideoUrl(csServer: string, url: string, size: number) : Promise < string > {
     if (!url) {
         return null;
@@ -245,6 +245,11 @@ export function getThumbLogo(csServer: string, uid: string){
 
 export function getThumbImage(csServer: string, url: string, type: string) {
     return `${csServer}/tools/api_get_thumbs.php?page_url=${url}&type=${type}`;
+}
+
+export function getBBSPath(url: string): string{
+    const path = url.split('Site')[1];
+    return `/Site${path}`;
 }
 
 //暫時需要使用的Function

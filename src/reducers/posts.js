@@ -9,6 +9,20 @@ import _ from 'lodash';
 const initialState = Immutable.Map();
 
 export default createReducer(initialState, {
+    [ActionTypes.POST_PUSH_LIKE](state, action){
+        return state.update(action.path, posts => {
+            return posts.update('content', content => {
+                return content.map(post => {
+
+                    if(post.get('id') === action.p_id){
+                        return post.set('cnt', action.cnt);
+                    }else{
+                        return post;
+                    }
+                });
+            });
+        });
+    },
     [ActionTypes.GET_COMMETS_REQUEST](state, action) {
         const {
             uid,

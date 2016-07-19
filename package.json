@@ -12,6 +12,7 @@
     "FormData": "^0.10.1",
     "crossroads": "^0.12.2",
     "moment": "^2.14.1",
+    "query-string": "^4.2.2",
     "react": "^15.2.1",
     "react-addons-pure-render-mixin": "^15.2.1",
     "react-native": "^0.28.0",

@@ -9,7 +9,32 @@ import {
     getMyCsServer,
 } from '../utils/apiWrapper';
 
-export function getComments(csServer: string, path: string, f: string, p: number = 1, ps: number = 10, id: string, uid: string) {
+export function likePost(csServer: string, query: Object, bbs_path: string, like: string, p_id: string, path: string): Function{
+    return (dispatch, getState) => {
+        const uri = `${bbs_path}/index.php`;
+        let params = {
+            path: query.path,
+            f: query.f,
+            like: like,
+            mode: 'like',
+            act: 'GetComment',
+        };
+
+        return request(uri, 'GET', params, SessionManager.sessionToken, csServer)
+        .then(resp => resp.json())
+        .then(resp => {
+            dispatch({
+                type: ActionTypes.POST_PUSH_LIKE,
+                cnt: resp.cnt_like,
+                p_id,
+                path,
+            });
+            return resp;
+        });
+    }
+}
+
+export function getComments(csServer: string, path: string, f: string, p: number = 1, ps: number = 10, id: string, uid: string): Function {
 
     return (dispatch, getState) => {
 
@@ -24,7 +49,6 @@ export function getComments(csServer: string, path: string, f: string, p: number
         return Promise.resolve(csServer)
             .then(_csServer => _csServer || getMyCsServer())
             .then(_csServer => {
-
                 return request(`/Site/${uid}/.nuweb_forum/index.php`, 'GET', params, SessionManager.sessionToken, _csServer);
             }).then(resp => {
 
@@ -57,6 +81,7 @@ export function getPostList(csServer: string, path: string, act: string = '', as
             ps: pageSize,
             ao: path,
             as: as,
+            cnt_like: 'y',
         };
 
         if (t_first) params.pt = t_first;
@@ -78,9 +103,10 @@ export function getPostList(csServer: string, path: string, act: string = '', as
                 const hasNextPaging = recs.length >= pageSize;
 
                 message.content = _.map(recs, (msg) => {
-                    let data = _.pick(msg, 'cnt', 't_first', 't_last', 'type', 'u_fp', 'v_fp');
 
-                    msg.files.map((file) => {
+                    let data = _.pick(msg, 'cnt', 't_first', 't_last', 'type', 'u_fp', 'v_fp', 'cnt_like');
+
+                    data.files = msg.files.map((file) => {
 
                         data.id = file.id;
                         if (!data.url) data.url = file.url;
@@ -93,11 +119,7 @@ export function getPostList(csServer: string, path: string, act: string = '', as
 
                         data.type = file.type;
                         data.description = file.description;
-
-                        if (_.isUndefined(data[data.type])) data[data.type] = new Array();
-
-
-                        data[data.type].push(f);
+                        return f;
                     });
                     return data;
                 });

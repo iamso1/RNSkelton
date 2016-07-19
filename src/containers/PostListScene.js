@@ -19,9 +19,11 @@ import {
 } from '../utils/TimeHandler';
 import {
     getThumbLogo,
+    getBBSPath,
 } from '../utils/apiWrapper';
 import {
-    getPostList
+    getPostList,
+    likePost,
 } from '../actions/posts';
 
 import InfiniteScrollView from 'react-native-infinite-scroll-view';
@@ -29,8 +31,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import NavBar from '../components/NavBar';
 import moment from 'moment';
 import _ from 'lodash';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 let Immutable = require('immutable');
+const queryString = require('query-string');
 
 class PostListScene extends React.Component{
     static propTypes = {
@@ -44,6 +48,8 @@ class PostListScene extends React.Component{
         super(props);
         this.refresh = this.refresh.bind(this);
         this.renderPostEntityView = this.renderPostEntityView.bind(this);
+        this.likePost = this.likePost.bind(this);
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
 
         let dataSource = new ListView.DataSource({
           rowHasChanged: (r1, r2) => !Immutable.is(r1, r2),
@@ -76,7 +82,6 @@ class PostListScene extends React.Component{
           let canLoadMore = postsData.get('hasNextPaging');
           let rowIds = (count => [...Array(count)].map((val, i) => i))(postCount);
 
-
           this.setState({
               dataSource: this.state.dataSource.cloneWithRows(postsContent, rowIds),
               canLoadMore: canLoadMore,
@@ -100,14 +105,18 @@ class PostListScene extends React.Component{
         this.props.dispatch(refreshPostList(this.props.csServer, path, '', 'all', null, 20));
     }
 
+    likePost(post: Object, path: string){
+        const bbs_path = getBBSPath(post.get('u_fp'));
+
+        const query = queryString.parse(post.get('url').split('?')[1]);
+        const { csServer } = this.props;
+        this.props.dispatch(likePost(csServer, query, bbs_path, 'n', post.get('id'), path))
+        .catch(error => console.warn(error));
+    }
+
     renderPostEntityView(post){
         let comments = [];
-
-        const mtime = moment(post.get('mtime')).format('YYYY-MM-DD A hh:mm:ss');
-        const Audio = post.get('Audio');
-        const type = post.get('type');
-        const Server = post.get('u_fp');
-        const uid = post.get('uid');
+        const { path } = this.props;
         const logo = getThumbLogo(this.props.csServer, post.get('uid'));
 
         if(!_.isUndefined(post.get('comments'))) comments = post.get('comments').toArray();
@@ -121,7 +130,7 @@ class PostListScene extends React.Component{
                             source={{uri: logo}}/>
 
                     </View>
-                    <View style={{flex: 8, marginTop: 5,}}>
+                    <View style={{flex: 4, marginTop: 5,}}>
                         <Text style={styles.postBodyText}>{post.get('v_fp')}</Text>
                     </View>
                     <View>
@@ -135,12 +144,13 @@ class PostListScene extends React.Component{
                 <View style={styles.postFooter}>
                     <View style={styles.postFooterBlock}>
                         <Icon.Button
+                            onPress = {() => this.likePost(post, path)}
                             style={styles.postFooterText}
                             name="thumbs-o-up"
                             backgroundColor="#FFFFFF"
                             color="#0000ff"
                             size={18}>
-                            讚
+                            <Text>讚({post.get('cnt')})</Text>
                         </Icon.Button>
                     </View>
                     <View style={styles.postFooterBlock}>
@@ -150,7 +160,7 @@ class PostListScene extends React.Component{
                             backgroundColor="#FFFFFF"
                             color="#0000ff"
                             size={18}>
-                            分享
+                            <Text>分享</Text>
                         </Icon.Button>
                     </View>
                     <View style={styles.postFooterBlock}>
@@ -161,7 +171,7 @@ class PostListScene extends React.Component{
                                 backgroundColor="#FFFFFF"
                                 color="#0000ff"
                                 size={18}>
-                                詳情
+                                <Text>詳情</Text>
                             </Icon.Button>
                     </View>
                 </View>

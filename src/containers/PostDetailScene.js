@@ -119,6 +119,12 @@ class PostDetailScene extends FileHanlderBase {
         }));
     }
 
+    likePost(post: Object){
+
+        const { csServer } = this.props;
+        const like = (post.get('bMyLike')) ? 'n' : 'y';
+        this.props.dispatch(likePost(csServer, post.get('bbs_path'), like, post.get('acn'), post.get('path'), post.get('f')));
+    }
 
     renderFileEntityView(file: Object, csServer: string){
         let data = {
@@ -126,7 +132,7 @@ class PostDetailScene extends FileHanlderBase {
             url: `${csServer}/${file.get('fp')}`,
             type: file.get('Y'),
         };
-        
+
         return (
         <View
             key={randomString(10)}
@@ -149,8 +155,14 @@ class PostDetailScene extends FileHanlderBase {
         const post = posts.get('detail');
         if(_.isUndefined(post)) return this.renderLoadingBar();
 
+        let icon;
+
+        const bMyLike = post.get('bMyLike');
+        if(bMyLike) icon = 'thumbs-up';
+        else icon = 'thumbs-o-up';
         const logo = getThumbLogo(this.props.csServer, post.get('acn'));
 
+console.log(post.toObject());
         return(
             <View style={styles.container}>
                 <NavBar
@@ -181,9 +193,9 @@ class PostDetailScene extends FileHanlderBase {
                   <View style={styles.postFooter}>
                       <View style={styles.postFooterBlock}>
                           <Icon.Button
-                              onPress = {() => this.likePost(post, path)}
+                              onPress = {() => this.likePost(post)}
                               style={styles.postFooterText}
-                              name="thumbs-o-up"
+                              name={icon}
                               backgroundColor="#FFFFFF"
                               color="#0000ff"
                               size={18}>

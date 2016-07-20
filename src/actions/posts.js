@@ -27,6 +27,11 @@ export function displayPostDeail(post: Object, csServer: string): Function{
         return request(uri, 'GET', params, SessionManager.sessionToken, csServer)
         .then(resp => resp.json())
         .then(resp => {
+            resp.path = path;
+            resp.f = f;
+            resp.i = i;
+            resp.bbs_path = bbs_path;
+
             dispatch({
                 type: ActionTypes.DISPLAY_POST_DETAIL,
                 post: resp,
@@ -36,12 +41,12 @@ export function displayPostDeail(post: Object, csServer: string): Function{
     }
 }
 
-export function likePost(csServer: string, query: Object, bbs_path: string, like: string, p_id: string, path: string): Function{
+export function likePost(csServer: string, bbs_path: string, like: string, p_id: string, path: string, f: string): Function{
     return (dispatch, getState) => {
         const uri = `${bbs_path}/index.php`;
         let params = {
-            path: query.path,
-            f: query.f,
+            path: path,
+            f: f,
             like: like,
             mode: 'like',
             act: 'GetComment',
@@ -50,11 +55,11 @@ export function likePost(csServer: string, query: Object, bbs_path: string, like
         return request(uri, 'GET', params, SessionManager.sessionToken, csServer)
         .then(resp => resp.json())
         .then(resp => {
+            const { cnt_like, bMyLike } = resp;
             dispatch({
                 type: ActionTypes.POST_PUSH_LIKE,
-                cnt: resp.cnt_like,
-                p_id,
-                path,
+                cnt_like,
+                bMyLike,
             });
             return resp;
         });

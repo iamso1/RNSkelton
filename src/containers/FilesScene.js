@@ -216,68 +216,70 @@ class FilesScene extends FileHandlerBase {
     }
 
     uploadFile() {
-      const options = {
-        title: '上傳檔案',
-        cancelButtonTitle: '取消',
-        takePhotoButtonTitle: '拍照上傳',
-        chooseFromLibraryButtonTitle: '從相簿選取',
-        noData: true,
-        storageOptions: {
-          skipBackup: true,
-          path: 'images',
-        },
-      };
-      ImagePickerManager.showImagePicker(options, (resp) => {
-        if (resp.didCancel) {
-        } else if (resp.error) {
-          console.warn('ImagePickerManager error - ' + resp.error);
-        } else {
-          this.setState({ isRefreshing: true });
-          const fileUri = resp.uri;
-          const fileName = fileUri.split('/').pop();
-          
-          uploadImage(this.state.csServer, this.state.path, fileUri, fileName)
-            .then(() => {
-              this.refresh();
-            })
-            .catch(error => {
-              console.warn('Unable to upload image - ' + error);
-            });
-        }
-      });
+        const options = {
+            title: '上傳檔案',
+            cancelButtonTitle: '取消',
+            takePhotoButtonTitle: '拍照上傳',
+            chooseFromLibraryButtonTitle: '從相簿選取',
+            noData: true,
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+        ImagePickerManager.showImagePicker(options, (resp) => {
+            if (resp.didCancel) {} else if (resp.error) {
+                console.warn('ImagePickerManager error - ' + resp.error);
+            } else {
+                this.setState({
+                    isRefreshing: true
+                });
+                const fileUri = resp.uri;
+                const fileName = fileUri.split('/').pop();
+
+                uploadImage(this.state.csServer, this.state.path, fileUri, fileName)
+                    .then(() => {
+                        this.refresh();
+                    })
+                    .catch(error => {
+                        console.warn('Unable to upload image - ' + error);
+                    });
+            }
+        });
     }
 
     uploadVideo() {
-      const options = {
-        title: '上傳檔案',
-        cancelButtonTitle: '取消',
-        takePhotoButtonTitle: '錄影上傳',
-        chooseFromLibraryButtonTitle: '從相簿選取',
-      mediaType: 'video',
-      videoQuality: 'high',
-      durationLimit: 90,
-        storageOptions: {
-          skipBackup: true,
-          path: 'video',
-        },
-      };
-      ImagePickerManager.showImagePicker(options, (resp) => {
-        if (resp.didCancel) {
-        } else if (resp.error) {
-          console.warn('ImagePickerManager error - ' + resp.error);
-        } else {
-          this.setState({ isRefreshing: true });
-          const fileUri = resp.uri;
-          const fileName = fileUri.split('/').pop();
-          uploadImage(this.state.csServer, this.state.path, fileUri, fileName)
-            .then(() => {
-              this.refresh();
-            })
-            .catch(error => {
-              console.warn('Unable to upload image - ' + error);
-            });
-        }
-      });
+        const options = {
+            title: '上傳檔案',
+            cancelButtonTitle: '取消',
+            takePhotoButtonTitle: '錄影上傳',
+            chooseFromLibraryButtonTitle: '從相簿選取',
+            mediaType: 'video',
+            videoQuality: 'high',
+            durationLimit: 90,
+            storageOptions: {
+                skipBackup: true,
+                path: 'video',
+            },
+        };
+        ImagePickerManager.showImagePicker(options, (resp) => {
+            if (resp.didCancel) {} else if (resp.error) {
+                console.warn('ImagePickerManager error - ' + resp.error);
+            } else {
+                this.setState({
+                    isRefreshing: true
+                });
+                const fileUri = resp.uri;
+                const fileName = fileUri.split('/').pop();
+                uploadImage(this.state.csServer, this.state.path, fileUri, fileName)
+                    .then(() => {
+                        this.refresh();
+                    })
+                    .catch(error => {
+                        console.warn('Unable to upload image - ' + error);
+                    });
+            }
+        });
     }
 
     render() {
@@ -318,78 +320,82 @@ class FilesScene extends FileHandlerBase {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  listView: {
-    marginTop: 10,
-  },
-  footerMargin: {
-    marginBottom: 10,
-  },
-  separator: {
-    backgroundColor: '#ccc',
-    height: 1,
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 50,
-    marginRight: 10,
-  },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  createDirDialog: {
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    width: 300,
-    height: 100,
-  },
-  createDirDialogControls: {
-    flexDirection: 'row',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  textInputContainer: {
-    padding: 20,
-  },
-  textInput: {
-    height: 20,
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: '#0076ff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  buttonTextContainer: {
-    flex: 1,
-    borderTopWidth: 1,
-    borderColor: '#ccc',
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  buttonTextContainerSeperator: {
-    borderRightWidth: 1,
-  },
+    container: {
+        flex: 1,
+    },
+    listView: {
+        marginTop: 10,
+    },
+    footerMargin: {
+        marginBottom: 10,
+    },
+    separator: {
+        backgroundColor: '#ccc',
+        height: 1,
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 50,
+        marginRight: 10,
+    },
+    overlay: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    createDirDialog: {
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        width: 300,
+        height: 100,
+    },
+    createDirDialogControls: {
+        flexDirection: 'row',
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+    },
+    textInputContainer: {
+        padding: 20,
+    },
+    textInput: {
+        height: 20,
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: '#0076ff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    buttonTextContainer: {
+        flex: 1,
+        borderTopWidth: 1,
+        borderColor: '#ccc',
+        paddingTop: 10,
+        paddingBottom: 10,
+    },
+    buttonTextContainerSeperator: {
+        borderRightWidth: 1,
+    },
 });
 
 
 function mapStateToProps(state) {
-  const { files } = state;
+    const {
+        files
+    } = state;
 
-  return {
-      files,
-  };
+    return {
+        files,
+    };
 }
 
-export default connect(mapStateToProps, null, null, { withRef: true })(FilesScene);
+export default connect(mapStateToProps, null, null, {
+    withRef: true
+})(FilesScene);

@@ -6,6 +6,7 @@ import RouteBase from './base';
 import _ from 'lodash';
 import SessionManager from '../utils/sessionManager';
 import PostListScene from '../containers/PostListScene';
+import PostDetailScene from '../containers/PostDetailScene';
 
 export class RoutePostList extends RouteBase{
     static PATTERN='/postlist/:?query:';
@@ -25,7 +26,10 @@ export class RoutePostDetail extends RouteBase{
     static PATTERN='/postdetail/:?query:';
 
     renderScene(navigator: Object, query: Object): Function{
+        const { csServer, name } = query;
         return <PostDetailScene
-            navigator={navigator} />;
+            navigator={navigator}
+            name={name}
+            csServer={csServer}/>;
     }
 }

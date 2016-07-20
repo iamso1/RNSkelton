@@ -9,6 +9,13 @@ import {
     getMyCsServer,
 } from '../utils/apiWrapper';
 
+export function displayPostDeail(post: Object): Function{
+    return {
+        type: ActionTypes.DISPLAY_POST_DETAIL,
+        post,
+    };
+}
+
 export function likePost(csServer: string, query: Object, bbs_path: string, like: string, p_id: string, path: string): Function{
     return (dispatch, getState) => {
         const uri = `${bbs_path}/index.php`;

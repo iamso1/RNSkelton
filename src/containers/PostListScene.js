@@ -24,7 +24,12 @@ import {
 import {
     getPostList,
     likePost,
+    displayPostDeail,
 } from '../actions/posts';
+import {
+    changeRoute
+} from '../actions/route';
+
 
 import InfiniteScrollView from 'react-native-infinite-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -49,6 +54,7 @@ class PostListScene extends React.Component{
         this.refresh = this.refresh.bind(this);
         this.renderPostEntityView = this.renderPostEntityView.bind(this);
         this.likePost = this.likePost.bind(this);
+        this.dispalyDetail = this.dispalyDetail.bind(this);
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
 
         let dataSource = new ListView.DataSource({
@@ -103,6 +109,12 @@ class PostListScene extends React.Component{
     refresh(){
         const { path } = this.props;
         this.props.dispatch(refreshPostList(this.props.csServer, path, '', 'all', null, 20));
+    }
+
+    dispalyDetail(post: Object){
+        const { csServer } = this.props;
+        this.props.dispatch(displayPostDeail(post));
+        this.props.dispatch(changeRoute(`/postdetail/?name=詳情&csServer=${csServer}`, this.props.navigator.props.navKey));
     }
 
     likePost(post: Object, path: string){
@@ -166,6 +178,7 @@ class PostListScene extends React.Component{
                     <View style={styles.postFooterBlock}>
 
                             <Icon.Button
+                                onPress={() => this.dispalyDetail(post)}
                                 style={styles.postFooterText}
                                 name="angle-double-right"
                                 backgroundColor="#FFFFFF"

@@ -106,7 +106,7 @@ export default class FileEntityView extends React.Component {
             });
       default:
         console.log('Unsupported file type - ' + file.toJS());
-        return;
+        return <View />;
     }
   }
 

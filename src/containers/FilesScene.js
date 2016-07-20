@@ -32,15 +32,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import NavBar from '../components/NavBar';
 import FileEntityView from '../components/FileEntityView';
 import TextInput from '../components/TextInput';
+import FileHandlerBase from '../components/FileHandlerBase';
 import { ImagePickerManager } from 'NativeModules';
 
-import {changeRoute} from '../actions/route';
 import {connect} from 'react-redux';
 import { uploadImage } from '../utils/apiWrapper';
 
 let Immutable = require('immutable');
 
-class FilesScene extends React.Component {
+class FilesScene extends FileHandlerBase {
     static propTypes = {
       navigator: PropTypes.object.isRequired,
       name: PropTypes.string,
@@ -59,15 +59,8 @@ class FilesScene extends React.Component {
         this.refresh = this.refresh.bind(this);
         this.renderFileEntityView = this.renderFileEntityView.bind(this);
 
-        this.handleSelectDirectory = this.handleSelectDirectory.bind(this);
-        this.handleSelectImage = this.handleSelectImage.bind(this);
-        this.handleSelectVideo = this.handleSelectVideo.bind(this);
-        this.handleSelectMedia = this.handleSelectMedia.bind(this);
-        this.handleSelectAudio = this.handleSelectAudio.bind(this);
-        this.handleSelectLink = this.handleSelectLink.bind(this);
-        this.handleSelectDocument = this.handleSelectDocument.bind(this);
         this.handleMenuSelect = this.handleMenuSelect.bind(this);
-        this.handleSelectHtml = this.handleSelectHtml.bind(this);
+
 
         this.closeCreateDirDialog = this.closeCreateDirDialog.bind(this);
         this.renderCreateDirDialog = this.renderCreateDirDialog.bind(this);
@@ -116,44 +109,6 @@ class FilesScene extends React.Component {
             isRefreshing: false,
           });
         }
-    }
-
-    handleSelectMedia(type, name, csServer, url) {
-      this.props.dispatch(changeRoute(`/viewers/media?name=${name}&type=${type}&csServer=${csServer}&path=${url}`,
-                                      this.props.navigator.props.navKey));
-    }
-
-    handleSelectAudio(name: string, csServer: string, url: string) {
-      this.handleSelectMedia('audio', name, csServer, url);
-    }
-
-    handleSelectVideo(name: string, csServer: string, url: string) {
-      this.handleSelectMedia('video', name, csServer, url);
-    }
-
-    handleSelectDirectory(name: ?string, csServer: string, url: string) {
-      this.props.dispatch(changeRoute(`/files/?name=${name}&csServer=${csServer}&path=${url}`,
-                                      this.props.navigator.props.navKey));
-    }
-
-    handleSelectImage(name: string, csServer: string, url: string) {
-      this.props.dispatch(changeRoute(`/viewers/image?name=${name}&csServer=${csServer}&path=${url}`,
-                                      this.props.navigator.props.navKey));
-    }
-
-    handleSelectLink(name: string, url: string) {
-      this.props.dispatch(changeRoute(`/viewers/web?name=${name}&type=link&url=${url}`,
-                                      this.props.navigator.props.navKey));
-    }
-
-    handleSelectDocument(name: string, csServer: string, url: string) {
-      this.props.dispatch(changeRoute(`/viewers/web?name=${name}&type=document&csServer=${csServer}&url=${url}`,
-                                      this.props.navigator.props.navKey));
-    }
-
-    handleSelectHtml(name: string, csServer: string, url: string) {
-        this.props.dispatch(changeRoute(`/viewers/web?name=${name}&type=html&csServer=${csServer}&url=${url}`,
-                                      this.props.navigator.props.navKey));
     }
 
     loadMore() {

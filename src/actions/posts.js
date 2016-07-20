@@ -11,10 +11,38 @@ import {
     getBBSPath,
 } from '../utils/apiWrapper';
 
-export function displayPostDeail(post: Object, csServer: string): Function{
+export function getComments(csServer: string, bbs_path: string, path: string, f: string, p: number, ps: number): Function {
+
+    return (dispatch, getState) => {
+        let params = {
+            mode: 'cmn_get',
+            path,
+            f,
+            p,
+            ps,
+        };
+        const uri = `${bbs_path}/index.php`;
+
+        return request(uri, 'GET', params, SessionManager.sessionToken, csServer)
+            .then(resp => resp.json())
+            .then(resp => {
+                dispatch({
+                    type: ActionTypes.POST_GET_COMMENTS_LIST,
+                    comments: resp.recs,
+                });
+            }).catch(error => console.warn(error));
+
+    }
+}
+
+export function displayPostDeail(post: Object, csServer: string): Function {
     return (dispatch, getState) => {
         const bbs_path = getBBSPath(post.get('u_fp'));
-        const {path, f, i} = QuerystringToObject(post.get('url'));
+        const {
+            path,
+            f,
+            i
+        } = QuerystringToObject(post.get('url'));
 
         let params = {
             mode: 'rec_get',
@@ -25,23 +53,25 @@ export function displayPostDeail(post: Object, csServer: string): Function{
 
         const uri = `${bbs_path}/index.php`;
         return request(uri, 'GET', params, SessionManager.sessionToken, csServer)
-        .then(resp => resp.json())
-        .then(resp => {
-            resp.path = path;
-            resp.f = f;
-            resp.i = i;
-            resp.bbs_path = bbs_path;
-
-            dispatch({
-                type: ActionTypes.DISPLAY_POST_DETAIL,
-                post: resp,
+            .then(resp => resp.json())
+            .then(resp => {
+                resp.path = path;
+                resp.f = f;
+                resp.i = i;
+                resp.bbs_path = bbs_path;
+                resp.v_fp = post.get('v_fp');
+                resp.comments = [];
+                
+                dispatch({
+                    type: ActionTypes.DISPLAY_POST_DETAIL,
+                    post: resp,
+                });
+                return resp;
             });
-            return resp;
-        });
     }
 }
 
-export function likePost(csServer: string, bbs_path: string, like: string, p_id: string, path: string, f: string): Function{
+export function likePost(csServer: string, bbs_path: string, like: string, p_id: string, path: string, f: string): Function {
     return (dispatch, getState) => {
         const uri = `${bbs_path}/index.php`;
         let params = {
@@ -53,53 +83,18 @@ export function likePost(csServer: string, bbs_path: string, like: string, p_id:
         };
 
         return request(uri, 'GET', params, SessionManager.sessionToken, csServer)
-        .then(resp => resp.json())
-        .then(resp => {
-            const { cnt_like, bMyLike } = resp;
-            dispatch({
-                type: ActionTypes.POST_PUSH_LIKE,
-                cnt_like,
-                bMyLike,
-            });
-            return resp;
-        });
-    }
-}
-
-export function getComments(csServer: string, path: string, f: string, p: number = 1, ps: number = 10, id: string, uid: string): Function {
-
-    return (dispatch, getState) => {
-
-        let params = {
-            mode: 'cmn_get',
-            path,
-            p,
-            ps,
-            f,
-        };
-
-        return Promise.resolve(csServer)
-            .then(_csServer => _csServer || getMyCsServer())
-            .then(_csServer => {
-                return request(`/Site/${uid}/.nuweb_forum/index.php`, 'GET', params, SessionManager.sessionToken, _csServer);
-            }).then(resp => {
-
-                return resp.json();
-            }).then(resp => {
-
-                const comments = resp.recs.map(comment => {
-                    return _.pick(comment, 't', 'c', 'acn');
-                });
-                const hasNextPaging = resp.recs.length >= ps;
-
+            .then(resp => resp.json())
+            .then(resp => {
+                const {
+                    cnt_like,
+                    bMyLike
+                } = resp;
                 dispatch({
-                    type: ActionTypes.GET_COMMETS_REQUEST,
-                    comments,
-                    hasNextPaging,
-                    id,
-                    uid,
+                    type: ActionTypes.POST_PUSH_LIKE,
+                    cnt_like,
+                    bMyLike,
                 });
-
+                return resp;
             });
     }
 }

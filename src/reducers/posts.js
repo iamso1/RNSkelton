@@ -12,8 +12,14 @@ export default createReducer(initialState, {
     [ActionTypes.DISPLAY_POST_DETAIL](state, action) {
         return state.set('detail', Immutable.fromJS(action.post));
     },
+    [ActionTypes.POST_GET_COMMENTS_LIST](state, action) {
+        return state.update('detail', post => {
+            return post.update('comments', comments => {
+                return comments.concat(Immutable.fromJS(action.comments));
+            });
+        });
+    },
     [ActionTypes.POST_PUSH_LIKE](state, action) {
-
         return state.update('detail', post => {
             return post.merge({
                 bMyLike: action.bMyLike,

@@ -29,6 +29,7 @@ import {
     getPostList,
     likePost,
     displayPostDeail,
+    getComments,
 } from '../actions/posts';
 import {
     changeRoute
@@ -50,6 +51,7 @@ import FileHanlderBase from '../components/FileHandlerBase';
 import moment from 'moment';
 import _ from 'lodash';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import Button from 'react-native-button';
 
 let Immutable = require('immutable');
 const queryString = require('query-string');
@@ -66,22 +68,15 @@ class PostDetailScene extends FileHanlderBase {
         super(props);
 
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+        this.loadComments = this.loadComments.bind(this);
 
-        let dataSource = new ListView.DataSource({
-          rowHasChanged: (r1, r2) => !Immutable.is(r1, r2),
-          getRowData: (dataBlob, sectionID, rowID) => { return dataBlob[sectionID].get(rowID); }
-        });
+        this._page = 1;
+        this._pageSize = 10;
 
         this.state = {
-            dataSource: dataSource.cloneWithRows(Immutable.List(), []),
             canLoadMore: true,
             isRefreshing: true,
         };
-    }
-
-    componentWillReceiveProps(nextProps) {
-          const { posts } = nextProps;
-
     }
 
     renderLoadingBar(refreshing: bool){
@@ -93,37 +88,16 @@ class PostDetailScene extends FileHanlderBase {
         </View>
     }
 
-    splitAtcFiles(csServer: string, atc: string, author: string){
-        let msg = atc.split('\n');
-        msg = _.chunk(msg, 7);
-        let files = msg.map(m => {
-            const atts = _.drop(m);
-            return atts.map(att => {
-                return att.replace(/@Y:|@fp:|@fn:|@fS:|@T:|@tn:|\n/, matched => {
-                    return replace_mapping[matched];
-                }).trim();
-            }).join('",');
-        });
-
-        return _.compact(files.map(newstr => {
-            let d = JSON.parse(`{${newstr}"}`);
-
-            if(d.type === 'Video'){
-                const realServer = csServer.split('/Site')[0];
-                d.thumb = getThumbImage(realServer, `/Site/${author}/.nuweb_forum/${d.path}`, 'Video');
-            }else{
-                d.thumb = (d.thumb === 'null') ? null : `${csServer}/${d.thumb}`;
-            }
-            d.path = `${csServer}/${d.path}`;
-            return d;
-        }));
-    }
-
     likePost(post: Object){
 
         const { csServer } = this.props;
         const like = (post.get('bMyLike')) ? 'n' : 'y';
         this.props.dispatch(likePost(csServer, post.get('bbs_path'), like, post.get('acn'), post.get('path'), post.get('f')));
+    }
+
+    loadComments(post: Object){
+        const { csServer } = this.props;
+        this.props.dispatch(getComments(csServer, post.get('bbs_path'), post.get('path'), post.get('f'), this._page, this._pageSize));
     }
 
     renderFileEntityView(file: Object, csServer: string){
@@ -155,14 +129,20 @@ class PostDetailScene extends FileHanlderBase {
         const post = posts.get('detail');
         if(_.isUndefined(post)) return this.renderLoadingBar();
 
-        let icon;
+        let icon, commentsBTN;
 
         const bMyLike = post.get('bMyLike');
         if(bMyLike) icon = 'thumbs-up';
         else icon = 'thumbs-o-up';
         const logo = getThumbLogo(this.props.csServer, post.get('acn'));
 
-console.log(post.toObject());
+        const comments = post.get('comments'),
+            cnt_cmn = post.get('cnt_cmn');
+        console.log(comments.size, cnt_cmn);
+        if(comments.size < cnt_cmn){
+            commentsBTN = <Button
+                onPress={() => this.loadComments(post)}>下載更多留言({post.get('cnt_cmn')})...</Button>;
+        }
         return(
             <View style={styles.container}>
                 <NavBar
@@ -184,7 +164,7 @@ console.log(post.toObject());
                   </View>
                   <View style={styles.postBody}>
                         <View>
-                        <Text>{post.get('c')}</Text>
+                        <Text style={styles.postBodyText}>{post.get('c')}</Text>
                       </View>
                       {post.get('atc').map(file => {
                         return this.renderFileEntityView(file, post.get('u_fp'));
@@ -215,7 +195,35 @@ console.log(post.toObject());
                   </View>
 
                   <View style={styles.postComment}>
-
+                      {post.get('comments').map(comment => {
+                          const logo = getThumbLogo(this.props.csServer, comment.get('acn'));
+                          return (
+                              <View
+                                  key={randomString(10)}
+                                  style={styles.container}>
+                                  <View style={styles.header}>
+                                      <View style={{flex: 1}}>
+                                          <Image
+                                              style={styles.userLogo}
+                                              source={{uri: logo}} />
+                                      </View>
+                                      <View style={{flex: 4, marginTop: 5,}}>
+                                          <Text style={styles.postBodyText}></Text>
+                                      </View>
+                                      <View>
+                                          <Text style={styles.postDateText}>{comment.get('t')}</Text>
+                                      </View>
+                                  </View>
+                                  <View style={styles.postBody}>
+                                    <View>
+                                        <Text style={styles.postBodyText}>{comment.get('c')}</Text>
+                                    </View>
+                                  </View>
+                              </View>
+                          );
+                          console.log(comment.toObject());
+                      })}
+                      {commentsBTN}
                   </View>
               </ScrollView>
             </View>

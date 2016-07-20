@@ -301,6 +301,42 @@ files[0]
 | us_like | Array | 按讚的名單 |
 | us_unlike | Array | 不喜歡的名單 |
 
+## 取回留言詳情
+
+    route: /Site/{cid}/.nuweb_forum/index.php
+
+    method: GET
+
+### Input
+
+| 欄位名稱 | 欄位類別 | 備註 |
+| -------- | ------ | ------ |
+| mode | String |  rec_get |
+| path | String  | 無 |
+| f | String | 無 |
+| i | String | default: 1 |
+
+### Output
+
+| 欄位名稱 | 欄位類別 | 備註 |
+| -------- | ------ | ------ |
+| T | String | 標題 |
+| c | String | 內文 |
+| a | String | 作者名稱 |
+| m | String | Mail |
+| u | String | url |
+| g | String | 標籤 |
+| tc | String | 建立日期 |
+| t | String | 修改日期 |
+| atc | Array | 附件列表 |
+| bAdmin | Bool | 管理者權限 |
+| bUpload | Bool | 上傳檔案權限 |
+| cnt_cmn | Number | 留言比數 |
+| cnt_like | Number | 按讚數 |
+| cnt_unlike | Number | 不喜歡總數 |
+| bMyLike | Bool | 自己有沒有按讚 |
+| us_like | Array | 按讚人的名單 |
+
 ## 取回留言的Comments
 
     route: /Site/{cid}/.nuweb_forum/index.php

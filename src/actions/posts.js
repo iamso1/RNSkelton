@@ -7,13 +7,33 @@ import _ from 'lodash';
 import {
     request,
     getMyCsServer,
+    QuerystringToObject,
+    getBBSPath,
 } from '../utils/apiWrapper';
 
-export function displayPostDeail(post: Object): Function{
-    return {
-        type: ActionTypes.DISPLAY_POST_DETAIL,
-        post,
-    };
+export function displayPostDeail(post: Object, csServer: string): Function{
+    return (dispatch, getState) => {
+        const bbs_path = getBBSPath(post.get('u_fp'));
+        const {path, f, i} = QuerystringToObject(post.get('url'));
+
+        let params = {
+            mode: 'rec_get',
+            path,
+            f,
+            i,
+        };
+
+        const uri = `${bbs_path}/index.php`;
+        return request(uri, 'GET', params, SessionManager.sessionToken, csServer)
+        .then(resp => resp.json())
+        .then(resp => {
+            dispatch({
+                type: ActionTypes.DISPLAY_POST_DETAIL,
+                post: resp,
+            });
+            return resp;
+        });
+    }
 }
 
 export function likePost(csServer: string, query: Object, bbs_path: string, like: string, p_id: string, path: string): Function{

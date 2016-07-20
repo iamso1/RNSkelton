@@ -10,6 +10,8 @@ import {
 } from './buildVar';
 import SessionManager from '../utils/sessionManager';
 
+queryString = require('query-string');
+
 export function getUid() {
     return SessionManager.acn;
 }
@@ -250,6 +252,10 @@ export function getThumbImage(csServer: string, url: string, type: string) {
 export function getBBSPath(url: string): string{
     const path = url.split('Site')[1];
     return `/Site${path}`;
+}
+
+export function QuerystringToObject(url: string): Object{
+    return queryString.parse(url.split('?')[1]);
 }
 
 //暫時需要使用的Function

@@ -44,6 +44,7 @@ import ProgressBar from 'react-native-progress/CircleSnail';
 import InfiniteScrollView from 'react-native-infinite-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NavBar from '../components/NavBar';
+import TextInput from '../components/TextInput';
 import FileEntityView from '../components/FileEntityView';
 import FileHanlderBase from '../components/FileHandlerBase';
 import moment from 'moment';
@@ -120,43 +121,35 @@ class PostDetailScene extends FileHanlderBase {
 
 
     renderFileEntityView(file: Object, csServer: string){
-        if(_.isEmpty(file.get('atc'))){
-            return <View key={file.get('id')}/>
-        }
-
-        const files = this.splitAtcFiles(csServer, file.get('atc'), file.get('author'));
-
+        let data = {
+            filename: file.get('fn'),
+            url: `${csServer}/${file.get('fp')}`,
+            type: file.get('Y'),
+        };
+        
         return (
         <View
-            key={file.get('id')}
+            key={randomString(10)}
             style={styles.fileBlockRow}>
-            {files.map(f => {
-                let data = _.pick(f, 'name', 'filename', 'type');
-                data.url = f.path;
-
-                return <View
-                    key={randomString(10)}
-                    style={styles.fileRow}>
-                    <FileEntityView
-                        file={Immutable.fromJS(data)}
-                        onSelectDirectory={this.handleSelectDirectory}
-                        onSelectImage={this.handleSelectImage}
-                        onSelectVideo={this.handleSelectVideo}
-                        onSelectAudio={this.handleSelectAudio}
-                        onSelectLink={this.handleSelectLink}
-                        onSelectDocument={this.handleSelectDocument}
-                        onSelectHtml={this.handleSelectHtml} />
-                </View>
-            })}
-
+                <FileEntityView
+                    file={Immutable.fromJS(data)}
+                    onSelectDirectory={this.handleSelectDirectory}
+                    onSelectImage={this.handleSelectImage}
+                    onSelectVideo={this.handleSelectVideo}
+                    onSelectAudio={this.handleSelectAudio}
+                    onSelectLink={this.handleSelectLink}
+                    onSelectDocument={this.handleSelectDocument}
+                    onSelectHtml={this.handleSelectHtml} />
         </View>
         );
     }
 
     render(){
-        const post = this.props.posts.get('detail');
+        const { posts } = this.props;
+        const post = posts.get('detail');
+        if(_.isUndefined(post)) return this.renderLoadingBar();
 
-        const logo = getThumbLogo(this.props.csServer, post.get('uid'));
+        const logo = getThumbLogo(this.props.csServer, post.get('acn'));
 
         return(
             <View style={styles.container}>
@@ -174,14 +167,14 @@ class PostDetailScene extends FileHanlderBase {
                           <Text style={styles.postBodyText}>{post.get('v_fp')}</Text>
                       </View>
                       <View>
-                          <Text style={styles.postDateText}>{TimeFormat(post.get('t_last'))}</Text>
+                          <Text style={styles.postDateText}>{TimeFormat(post.get('t'))}</Text>
                       </View>
                   </View>
                   <View style={styles.postBody}>
                         <View>
-                        <Text>{post.get('description')}</Text>
+                        <Text>{post.get('c')}</Text>
                       </View>
-                      {post.get('files').map(file => {
+                      {post.get('atc').map(file => {
                         return this.renderFileEntityView(file, post.get('u_fp'));
                       })}
                   </View>
@@ -194,7 +187,7 @@ class PostDetailScene extends FileHanlderBase {
                               backgroundColor="#FFFFFF"
                               color="#0000ff"
                               size={18}>
-                              <Text>讚({post.get('cnt')})</Text>
+                              <Text>讚({post.get('cnt_like')})</Text>
                           </Icon.Button>
                       </View>
                       <View style={styles.postFooterBlock}>
@@ -207,21 +200,12 @@ class PostDetailScene extends FileHanlderBase {
                               <Text>分享</Text>
                           </Icon.Button>
                       </View>
-                      <View style={styles.postFooterBlock}>
+                  </View>
 
-                              <Icon.Button
-                                  onPress={() => this.dispalyDetail(post)}
-                                  style={styles.postFooterText}
-                                  name="angle-double-right"
-                                  backgroundColor="#FFFFFF"
-                                  color="#0000ff"
-                                  size={18}>
-                                  <Text>詳情</Text>
-                              </Icon.Button>
-                      </View>
+                  <View style={styles.postComment}>
+
                   </View>
               </ScrollView>
-
             </View>
         );
     }
@@ -273,6 +257,7 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         paddingBottom: 5,
         borderTopWidth: 1,
+        borderBottomWidth: 1,
         borderColor: '#CCCCCC',
     },
     postFooterBlock: {

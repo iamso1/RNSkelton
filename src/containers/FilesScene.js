@@ -34,7 +34,7 @@ import FileEntityView from '../components/FileEntityView';
 import TextInput from '../components/TextInput';
 import FileHandlerBase from '../components/FileHandlerBase';
 import { ImagePickerManager } from 'NativeModules';
-
+import {changeRoute} from '../actions/route';
 import {connect} from 'react-redux';
 import { uploadImage } from '../utils/apiWrapper';
 
@@ -235,7 +235,7 @@ class FilesScene extends FileHandlerBase {
           this.setState({ isRefreshing: true });
           const fileUri = resp.uri;
           const fileName = fileUri.split('/').pop();
-          console.log(this.state);
+          
           uploadImage(this.state.csServer, this.state.path, fileUri, fileName)
             .then(() => {
               this.refresh();

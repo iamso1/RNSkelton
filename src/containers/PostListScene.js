@@ -20,6 +20,7 @@ import {
 import {
     getThumbLogo,
     getBBSPath,
+    QuerystringToObject,
 } from '../utils/apiWrapper';
 import {
     getPostList,
@@ -39,7 +40,6 @@ import _ from 'lodash';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 let Immutable = require('immutable');
-const queryString = require('query-string');
 
 class PostListScene extends React.Component{
     static propTypes = {
@@ -113,14 +113,15 @@ class PostListScene extends React.Component{
 
     dispalyDetail(post: Object){
         const { csServer } = this.props;
-        this.props.dispatch(displayPostDeail(post));
+        this.props.dispatch(displayPostDeail(post, csServer));
         this.props.dispatch(changeRoute(`/postdetail/?name=詳情&csServer=${csServer}`, this.props.navigator.props.navKey));
     }
 
     likePost(post: Object, path: string){
         const bbs_path = getBBSPath(post.get('u_fp'));
 
-        const query = queryString.parse(post.get('url').split('?')[1]);
+        const query = QuerystringToObject(post.get('url'));
+
         const { csServer } = this.props;
         this.props.dispatch(likePost(csServer, query, bbs_path, 'n', post.get('id'), path))
         .catch(error => console.warn(error));
@@ -154,17 +155,6 @@ class PostListScene extends React.Component{
                     <Text style={styles.postBodyText}>{post.get('description')}</Text>
                 </View>
                 <View style={styles.postFooter}>
-                    <View style={styles.postFooterBlock}>
-                        <Icon.Button
-                            onPress = {() => this.likePost(post, path)}
-                            style={styles.postFooterText}
-                            name="thumbs-o-up"
-                            backgroundColor="#FFFFFF"
-                            color="#0000ff"
-                            size={18}>
-                            <Text>讚({post.get('cnt')})</Text>
-                        </Icon.Button>
-                    </View>
                     <View style={styles.postFooterBlock}>
                         <Icon.Button
                             style={styles.postFooterText}

@@ -32,6 +32,7 @@ export default class FileHandlerBase extends React.Component {
     }
 
     handleSelectVideo(name: string, csServer: string, url: string) {
+        console.log(url);
         this.handleSelectMedia('video', name, csServer, url);
     }
 

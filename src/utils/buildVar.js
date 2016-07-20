@@ -5,6 +5,17 @@ export const API_URL_BASE = 'https://cloud.ccu.edu.tw';
 export const WS_HOST = 'ws://nuweb.ddns.net:5701';
 export const WS_IMAGE_HOST = 'http://nuweb.ddns.net:5701';
 export const WS_API_HOST = 'http://nuweb.ddns.net:5701';
+//splitAtcFiles 用
+export const replace_mapping = {
+    "@Y:" : '"type":"',
+    "@fp:" : '"path":"',
+    "@fn:" : '"filename":"',
+    "@fS:" : '"size":"',
+    "@T:" : '"name":"',
+    "@tn:" : '"thumb":"',
+    "\n" : ''
+};
+
 export const permisions = [
     {
         key: 'nuweb',

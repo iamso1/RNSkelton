@@ -224,50 +224,50 @@ class PostListScene extends React.Component{
     }
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  userLogo: {
-      height: 40,
-      width: 40,
-      marginLeft: 5,
-      borderRadius: 20,
-  },
-  postHeader: {
-      flexDirection: 'row',
-      marginRight: 10,
-      marginLeft: 10,
-  },
-  postContainer: {
-      paddingTop: 10,
-      marginTop: 10,
-      marginLeft: 15,
-      borderBottomWidth: 1,
-      borderColor: '#CCCCCC',
-  },
-  postBody: {
-      paddingLeft: 25,
-      paddingTop: 10,
-      marginBottom: 10,
-  },
-  postBodyText: {
-      fontSize: 18,
-      color: '#000000',
-  },
-  postDateText: {
-      fontSize: 12,
-      color: '#CCCCCC'
-  },
-  postFooter: {
-      flexDirection: 'row',
-      paddingTop: 5,
-      paddingBottom: 5,
-      borderTopWidth: 1,
-      borderColor: '#CCCCCC',
-  },
-  postFooterBlock: {
-      flex: 1,
-  },
+    container: {
+        flex: 1,
+    },
+    userLogo: {
+        height: 40,
+        width: 40,
+        marginLeft: 5,
+        borderRadius: 20,
+    },
+    postHeader: {
+        flexDirection: 'row',
+        marginRight: 10,
+        marginLeft: 10,
+    },
+    postContainer: {
+        paddingTop: 10,
+        marginTop: 10,
+        marginLeft: 15,
+        borderBottomWidth: 1,
+        borderColor: '#CCCCCC',
+    },
+    postBody: {
+        paddingLeft: 25,
+        paddingTop: 10,
+        marginBottom: 10,
+    },
+    postBodyText: {
+        fontSize: 18,
+        color: '#000000',
+    },
+    postDateText: {
+        fontSize: 12,
+        color: '#CCCCCC'
+    },
+    postFooter: {
+        flexDirection: 'row',
+        paddingTop: 5,
+        paddingBottom: 5,
+        borderTopWidth: 1,
+        borderColor: '#CCCCCC',
+    },
+    postFooterBlock: {
+        flex: 1,
+    },
     postFooterText: {
         alignItems: 'center',
         justifyContent: 'center',

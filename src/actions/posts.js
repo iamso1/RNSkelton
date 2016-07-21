@@ -11,6 +11,34 @@ import {
     getBBSPath,
 } from '../utils/apiWrapper';
 
+export function pushComment(csServer: string, bbs_path, params: Object): Function{
+    return (dispatch, getState) => {
+        const uri = `${bbs_path}/index.php`;
+
+        return request(uri, 'GET', params, SessionManager.sessionToken, csServer)
+        .then(resp => resp.text())
+        .then(resp => {
+            const { path, f } = params;
+            const options = {
+                mode: 'cmn_get',
+                p: 1,
+                ps: 1,
+                path,
+                f,
+            };
+            return request(uri, 'GET', options, SessionManager.sessionToken, csServer);
+        }).then(resp => resp.json())
+        .then(resp => {
+            dispatch({
+                type: ActionTypes.POST_GET_COMMENTS_LIST,
+                comments: resp.recs,
+            });
+            return resp;
+        });
+    }
+
+}
+
 export function getComments(csServer: string, bbs_path: string, path: string, f: string, p: number, ps: number): Function {
 
     return (dispatch, getState) => {
@@ -30,6 +58,7 @@ export function getComments(csServer: string, bbs_path: string, path: string, f:
                     type: ActionTypes.POST_GET_COMMENTS_LIST,
                     comments: resp.recs,
                 });
+                return resp;
             }).catch(error => console.warn(error));
 
     }
@@ -61,7 +90,7 @@ export function displayPostDeail(post: Object, csServer: string): Function {
                 resp.bbs_path = bbs_path;
                 resp.v_fp = post.get('v_fp');
                 resp.comments = [];
-                
+
                 dispatch({
                     type: ActionTypes.DISPLAY_POST_DETAIL,
                     post: resp,

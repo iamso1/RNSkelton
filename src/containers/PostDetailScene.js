@@ -5,13 +5,8 @@ import {
     ScrollView,
     View,
     Text,
-    ListView,
     Image,
     InteractionManager,
-    TouchableHighlight,
-    TouchableWithoutFeedback,
-    RefreshControl,
-    Dimensions,
     StyleSheet,
 } from 'react-native';
 import {
@@ -29,7 +24,7 @@ import {
     getPostList,
     likePost,
     displayPostDeail,
-    getComments,
+    pushComment,
 } from '../actions/posts';
 import {
     changeRoute
@@ -40,12 +35,14 @@ import {
 import {
     randomString,
 } from '../utils/OthersLib';
+
 import ProgressBar from 'react-native-progress/CircleSnail';
 
 import InfiniteScrollView from 'react-native-infinite-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NavBar from '../components/NavBar';
 import TextInput from '../components/TextInput';
+import Comments from '../components/Comments';
 import FileEntityView from '../components/FileEntityView';
 import FileHanlderBase from '../components/FileHandlerBase';
 import moment from 'moment';
@@ -68,7 +65,7 @@ class PostDetailScene extends FileHanlderBase {
         super(props);
 
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-        this.loadComments = this.loadComments.bind(this);
+        this.addComment = this.addComment.bind(this);
 
         this._page = 1;
         this._pageSize = 10;
@@ -76,6 +73,7 @@ class PostDetailScene extends FileHanlderBase {
         this.state = {
             canLoadMore: true,
             isRefreshing: true,
+            comment: '',
         };
     }
 
@@ -95,9 +93,23 @@ class PostDetailScene extends FileHanlderBase {
         this.props.dispatch(likePost(csServer, post.get('bbs_path'), like, post.get('acn'), post.get('path'), post.get('f')));
     }
 
-    loadComments(post: Object){
+    addComment(bbs_path: string, path: string, f: string, ){
+
+        this.refs.textInput_comment.blur();
         const { csServer } = this.props;
-        this.props.dispatch(getComments(csServer, post.get('bbs_path'), post.get('path'), post.get('f'), this._page, this._pageSize));
+        let params = {
+            mode: 'far_up',
+            c_type: 'text',
+            FA_Content: this.state.comment,
+            path,
+            f,
+
+        };
+
+        this.props.dispatch(pushComment(csServer, bbs_path, params));
+        this.setState({
+            comment: ''
+        });
     }
 
     renderFileEntityView(file: Object, csServer: string){
@@ -137,12 +149,9 @@ class PostDetailScene extends FileHanlderBase {
         const logo = getThumbLogo(this.props.csServer, post.get('acn'));
 
         const comments = post.get('comments'),
-            cnt_cmn = post.get('cnt_cmn');
-        console.log(comments.size, cnt_cmn);
-        if(comments.size < cnt_cmn){
-            commentsBTN = <Button
-                onPress={() => this.loadComments(post)}>下載更多留言({post.get('cnt_cmn')})...</Button>;
-        }
+            cnt_cmn = post.get('cnt_cmn')
+            atc = post.get('atc') || Immutable.List([]);
+
         return(
             <View style={styles.container}>
                 <NavBar
@@ -166,7 +175,7 @@ class PostDetailScene extends FileHanlderBase {
                         <View>
                         <Text style={styles.postBodyText}>{post.get('c')}</Text>
                       </View>
-                      {post.get('atc').map(file => {
+                      {atc.map(file => {
                         return this.renderFileEntityView(file, post.get('u_fp'));
                       })}
                   </View>
@@ -194,37 +203,22 @@ class PostDetailScene extends FileHanlderBase {
                       </View>
                   </View>
 
-                  <View style={styles.postComment}>
-                      {post.get('comments').map(comment => {
-                          const logo = getThumbLogo(this.props.csServer, comment.get('acn'));
-                          return (
-                              <View
-                                  key={randomString(10)}
-                                  style={styles.container}>
-                                  <View style={styles.header}>
-                                      <View style={{flex: 1}}>
-                                          <Image
-                                              style={styles.userLogo}
-                                              source={{uri: logo}} />
-                                      </View>
-                                      <View style={{flex: 4, marginTop: 5,}}>
-                                          <Text style={styles.postBodyText}></Text>
-                                      </View>
-                                      <View>
-                                          <Text style={styles.postDateText}>{comment.get('t')}</Text>
-                                      </View>
-                                  </View>
-                                  <View style={styles.postBody}>
-                                    <View>
-                                        <Text style={styles.postBodyText}>{comment.get('c')}</Text>
-                                    </View>
-                                  </View>
-                              </View>
-                          );
-                          console.log(comment.toObject());
-                      })}
-                      {commentsBTN}
-                  </View>
+                  <Comments
+                      csServer={this.props.csServer}
+                      comments={comments}
+                      cnt_cmn={cnt_cmn}
+                      post={post}
+                      dispatch={this.props.dispatch}/>
+
+                <TextInput
+                    containerStyle={styles.textInput}
+                    onSubmitEditing={() => this.addComment(post.get('bbs_path'), post.get('path'), post.get('f'))}
+                    onChangeText={(text) => this.setState({comment: text})}
+                    value={this.state.comment}
+                    ref="textInput_comment"
+                    placeholder="Enter Comment"
+                    autoCorrect={false}
+                    autoCapitalize="none" />
               </ScrollView>
             </View>
         );
@@ -286,6 +280,14 @@ const styles = StyleSheet.create({
     postFooterText: {
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    textInput: {
+        marginLeft: 20,
+        marginRight: 20,
+        marginTop: 10,
+        paddingLeft: 10,
+        borderColor: '#CCCCCC',
+        borderWidth: 2,
     },
 });
 

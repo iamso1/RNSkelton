@@ -372,6 +372,27 @@ Json 結構
 | acn | String | 發文者id |
 | t | String | 發文時間 |
 
+## 新增留言
+
+    route: /Site/{cid}/.nuweb_forum/index.php
+
+    method: GET
+
+### Input
+
+| 欄位名稱 | 欄位類別 | 備註 |
+| -------- | ------ | ------ |
+| mode | 'far_up': String |  enums: [ca_up(新增文章) / far_up(新增留言) / ea_up(修改或留言) / da_up(刪除文章或留言)] |
+| path | String  | 無 |
+| f | String | 無 |
+| FA_Content | String | 留言內容 |
+| c_type | String | enums: [*html / text] 指定 FA_Content 的格式，預設html |
+| FA_Tags | String | 標籤 |
+
+### Output
+
+文章的連結網址
+
 ## 檔案架構
 
 ```

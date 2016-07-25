@@ -20,6 +20,8 @@ import {
 import AppSessionState from '../constants/AppSessionState';
 import WebsocketManager from '../utils/websocketManager';
 
+import axios from 'axios';
+
 class EntryScene extends React.Component {
     constructor(props){
         super(props);
@@ -29,7 +31,6 @@ class EntryScene extends React.Component {
         //check login state
         this.props.dispatch(checkAppSessionState());
     }
-
 
     componentWillReceiveProps(nextProps) {
         const {auth} = nextProps;

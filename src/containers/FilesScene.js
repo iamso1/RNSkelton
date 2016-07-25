@@ -66,8 +66,6 @@ class FilesScene extends FileHandlerBase {
         this.renderCreateDirDialog = this.renderCreateDirDialog.bind(this);
         this.renderNavRightButtons = this.renderNavRightButtons.bind(this);
 
-        this.renderNavRightButtons = this.renderNavRightButtons.bind(this);
-
         this._page = 1;
         this._filesKey = composeFilesKey(this.props.type, this.props.path);
 
@@ -184,7 +182,7 @@ class FilesScene extends FileHandlerBase {
     }
 
     renderNavRightButtons() {
-        if(_.isNull(this.state.path)) return <View />;
+        //if(_.isNull(this.state.path)) return <View />;
 
         return (
             <View>

@@ -4,7 +4,6 @@
 .*/*.web.js
 .*/*.android.js
 
-
 # Some modules have their own node_modules with overlap
 .*/node_modules/node-haste/.*
 
@@ -44,12 +43,12 @@
 # Ignore generators
 .*/local-cli/generator.*
 
-
 # Ignore BUCK generated folders
 .*\.buckd/
 
 # Ignore RNPM
 .*/local-cli/rnpm/.*
+
 .*/node_modules/is-my-json-valid/test/.*\.json
 .*/node_modules/iconv-lite/encodings/tables/.*\.json
 .*/node_modules/y18n/test/.*\.json
@@ -82,8 +81,6 @@ esproposal.class_static_fields=enable
 esproposal.class_instance_fields=enable
 
 experimental.strict_type_args=true
-
-unsafe.enable_getters_and_setters=true
 
 munge_underscores=true
 

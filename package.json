@@ -15,7 +15,7 @@
     "query-string": "^4.2.2",
     "react": "^15.2.1",
     "react-addons-pure-render-mixin": "^15.2.1",
-    "react-native": "^0.28.0",
+    "react-native": "^0.30.0",
     "react-native-accordion": "^1.0.0",
     "react-native-button": "^1.6.0",
     "react-native-device-info": "^0.9.3",

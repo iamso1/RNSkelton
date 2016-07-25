@@ -5,10 +5,8 @@ import {
    ListView,
    Image,
    InteractionManager,
-   TouchableHighlight,
    TouchableWithoutFeedback,
    RefreshControl,
-   Dimensions,
    StyleSheet,
  } from 'react-native';
 import {
@@ -35,7 +33,7 @@ import {
 import InfiniteScrollView from 'react-native-infinite-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NavBar from '../components/NavBar';
-import moment from 'moment';
+import TextInput from '../components/TextInput';
 import _ from 'lodash';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
@@ -52,9 +50,14 @@ class PostListScene extends React.Component{
     constructor(props){
         super(props);
         this.refresh = this.refresh.bind(this);
+
         this.renderPostEntityView = this.renderPostEntityView.bind(this);
+        this.renderNavRightButtons = this.renderNavRightButtons.bind(this);
+        this.renderCreatePostDialog = this.renderCreatePostDialog.bind(this);
+
         this.likePost = this.likePost.bind(this);
         this.dispalyDetail = this.dispalyDetail.bind(this);
+
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
 
         let dataSource = new ListView.DataSource({
@@ -68,7 +71,8 @@ class PostListScene extends React.Component{
             isRefreshing: false,
             act: '',
             as: '',
-            comments: {},
+            showCreatePostDialog: false,
+            comment: '',
         };
     }
 
@@ -127,6 +131,38 @@ class PostListScene extends React.Component{
         .catch(error => console.warn(error));
     }
 
+    renderCreatePostDialog() {
+      if (!this.state.showCreatePostDialog) { return null; }
+
+      return (
+        <TouchableWithoutFeedback onPress={this.closeCreateDirDialog}>
+          <View style={styles.overlay}>
+            <View style={styles.createDirDialog}>
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  style={styles.textInput}
+                  autoFocus={true}
+                  onChangeText={text => this.setState({ comment: text })}
+                  value={this.state.createDirName}
+                  placeholder="請輸入文章內容"
+                  autoCapitalize="none"/>
+              </View>
+              <View style={styles.createDirDialogControls}>
+                <View style={[styles.buttonTextContainer, styles.buttonTextContainerSeperator]}>
+                  <Text
+                      style={styles.buttonText}
+                      onPress={() => this.setState({showCreatePostDialog: false})}>取消</Text>
+                </View>
+                <View style={styles.buttonTextContainer}>
+                  <Text style={styles.buttonText} onPress={this.createDir}>確認</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      );
+    }
+
     renderPostEntityView(post){
         let comments = [];
         const { path } = this.props;
@@ -182,14 +218,26 @@ class PostListScene extends React.Component{
         );
     }
 
-
+    renderNavRightButtons() {
+        return (
+            <Icon.Button
+                onPress={() => this.setState({showCreatePostDialog: true})}
+                backgroundColor='#00a5e6'
+                style={styles.navIcon}
+                name="plus"
+                color="#FFFFFF"
+                size={18} />
+        );
+    }
 
     render(){
         return(
             <View style={styles.container}>
                 <NavBar
                   navigator={this.props.navigator}
-                  title={this.props.name}/>
+                  title={this.props.name}
+                  renderRightButtonsComponent={this.renderNavRightButtons}/>
+
                   <ListView
                       renderScrollComponent={props => <InfiniteScrollView
                           onLoadMoreAsync={this.loadMore}
@@ -209,6 +257,7 @@ class PostListScene extends React.Component{
                           renderRow={this.renderPostEntityView}
                           renderFooter={() => <View style={styles.footerMargin} />}
                       />
+                  {this.renderCreatePostDialog()}
             </View>
         );
     }
@@ -261,6 +310,56 @@ const styles = StyleSheet.create({
     postFooterText: {
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    navIcon: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    overlay: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    createDirDialog: {
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        width: 300,
+        height: 100,
+    },
+    createDirDialogControls: {
+        flexDirection: 'row',
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+    },
+    textInputContainer: {
+        padding: 20,
+    },
+    textInput: {
+        height: 20,
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: '#0076ff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    buttonTextContainer: {
+        flex: 1,
+        borderTopWidth: 1,
+        borderColor: '#ccc',
+        paddingTop: 10,
+        paddingBottom: 10,
+    },
+    buttonTextContainerSeperator: {
+        borderRightWidth: 1,
     },
 });
 
